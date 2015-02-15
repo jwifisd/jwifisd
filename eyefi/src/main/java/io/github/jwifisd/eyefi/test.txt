@@ -1,0 +1,9 @@
+6]   (d81bfffaee66181b5398b8a094616753 vs c06581c4dbdfb056625e25481bfd0d7b)
+connectx
+macaddress:00185669c7ca
+cnonce:58e91b1c81296b19324e2a3b0f40d279
+transfermode:546
+transfermodetimestamp:0
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Body><StartSessionResponse xmlns="http://localhost/api/soap/eyefilm">
+ <credential>d81bfffaee66181b5398b8a094616753</credential><snonce>58e91b1c81296b19324e2a3b0f40d279</snonce><transfermode>2</transfermode><transfermodetimestamp>1230268824</transfermodetimestamp><upsyncallowed>false</upsyncallowed></StartSessionResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>
