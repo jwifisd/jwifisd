@@ -382,7 +382,14 @@
 	</reporting>
 
 	<modules>
+		<module>api</module>
+		<module>mdns</module>
+		<module>net</module>
+		<module>detector-mdns</module>
+		<module>detector-55777</module>
 		<module>eyefi</module>
+		<module>flashair</module>
+		<module>transcend</module>
 	</modules>
 	<dependencies>
 		<dependency>

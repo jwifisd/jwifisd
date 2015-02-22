@@ -1,8 +1,8 @@
-package io.github.jwifisd.transcend;
+package io.github.jwifisd.detect55777;
 
 /*
  * #%L
- * jwifisd-transcend
+ * jwifisd-detector-55777
  * %%
  * Copyright (C) 2012 - 2015 jwifisd
  * %%
@@ -22,6 +22,10 @@ package io.github.jwifisd.transcend;
  * #L%
  */
 
+import io.github.jwifisd.api.IBrowse;
+import io.github.jwifisd.api.ICard;
+import io.github.jwifisd.api.IEvent;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -30,21 +34,21 @@ import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
-public class TranscendWiFiSD {
+public class PotentialWifiSDCard implements ICard {
 
-    String title;
+    private String title;
 
-    InetAddress ip;
+    private InetAddress ip;
 
-    InetAddress netmask;
+    private InetAddress netmask;
 
-    InetAddress router;
+    private InetAddress router;
 
-    String mode;
+    private String mode;
 
-    String essid;
+    private String essid;
 
-    public TranscendWiFiSD(DatagramPacket response) {
+    public PotentialWifiSDCard(DatagramPacket response) {
         byte[] packet = new byte[response.getLength()];
         packet = Arrays.copyOfRange(response.getData(), response.getOffset(), response.getLength() + response.getOffset());
         String packetString = new String(packet, Charset.forName("UTF-8"));
@@ -105,8 +109,29 @@ public class TranscendWiFiSD {
         result.append("\n}");
         return result.toString();
     }
+
     /**
      * Transcend WiFiSD - interface=mlan0 ip=192.168.11.254
      * netmask=255.255.255.0 router=0.0.0.0 mode=server essid=WIFISD
      */
+
+    @Override
+    public IBrowse browse() {
+        return null;
+    }
+
+    @Override
+    public IEvent event() {
+        return null;
+    }
+
+    @Override
+    public InetAddress ipAddress() {
+        return ip;
+    }
+
+    @Override
+    public String title() {
+        return title;
+    }
 }

@@ -6,11 +6,21 @@
 		<groupId>io.github.jwifisd</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>jwifisd-transcend</artifactId>
+	<artifactId>jwifisd-flashair</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId} Protocol implementation</description>
 	<packaging>jar</packaging>
 	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>jwifisd-mdns</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.9</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<site.basedir>${project.parent.basedir}</site.basedir>

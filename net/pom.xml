@@ -6,7 +6,7 @@
 		<groupId>io.github.jwifisd</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>jwifisd-transcend</artifactId>
+	<artifactId>jwifisd-net</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId} Protocol implementation</description>
 	<packaging>jar</packaging>
