@@ -390,6 +390,7 @@
 		<module>eyefi</module>
 		<module>flashair</module>
 		<module>transcend</module>
+		<module>all</module>
 	</modules>
 	<dependencies>
 		<dependency>

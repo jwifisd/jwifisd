@@ -13,11 +13,11 @@ package io.github.jwifisd.net;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -48,7 +48,7 @@ public class LocalNetworkScanner {
     }
 
     private void doWithNetwork(NetworkInterface netint, int adresslength, IDoWithNetwork doWithNetwork) throws IOException {
-        LOG.info("Interface with name: %s", netint.getName());
+        LOG.info("Interface with name: {}", netint.getName());
 
         if (netint.isLoopback()) {
             LOG.info("Inteface is loopback, skip that one");
@@ -58,7 +58,7 @@ public class LocalNetworkScanner {
         for (InterfaceAddress adress : netint.getInterfaceAddresses()) {
             if (adress.getAddress().getAddress().length == adresslength) {
                 networkPrefixLength = Math.max(networkPrefixLength, adress.getNetworkPrefixLength());
-                System.out.println("prefix " + networkPrefixLength);
+                LOG.info("found prefix {}", networkPrefixLength);
             } else {
                 LOG.info("Address scipped (ipv4/ipv6)", adress.getAddress());
             }
@@ -66,16 +66,18 @@ public class LocalNetworkScanner {
         if (networkPrefixLength > 1) {
             Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
             for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-                LocalNetwork localNetwork = new LocalNetwork(inetAddress, networkPrefixLength);
-                doWithNetwork(localNetwork, doWithNetwork);
+                if (inetAddress.getAddress().length == adresslength) {
+                    LocalNetwork localNetwork = new LocalNetwork(inetAddress, networkPrefixLength);
+                    doWithNetwork(localNetwork, doWithNetwork);
+                }
             }
         } else {
-            LOG.warn("not a normal network (net prefix=0) could be vpn or so (%s)", netint.getName());
+            LOG.warn("not a normal network (net prefix=0) could be vpn or so ({})", netint.getName());
         }
     }
 
     private void doWithNetwork(LocalNetwork localNetwork, IDoWithNetwork doWithNetwork) {
-        LOG.info("localNetwork: %s", localNetwork);
+        LOG.info("localNetwork: {}", localNetwork);
         doWithNetwork.run(localNetwork);
     }
 }

@@ -13,11 +13,11 @@ package io.github.jwifisd.detect.mdns;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -35,15 +35,20 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
-import java.nio.charset.Charset;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DetectorMDNS implements IDetector {
 
+    private static final Logger LOG = LoggerFactory.getLogger(DetectorMDNS.class);
+
     @Override
-    public List<ICard> scan(LocalNetwork network) throws IOException {
+    public List<ICard> scan(LocalNetwork network, String... names) throws IOException {
 
         MulticastSocket socket = new MulticastSocket(5353);
         socket.setReuseAddress(true);
@@ -52,44 +57,60 @@ public class DetectorMDNS implements IDetector {
         NetworkInterface nic = NetworkInterface.getByInetAddress(network.getInterfaceIp());
         socket.joinGroup(new InetSocketAddress("224.0.0.251", 5353), nic);
 
-        byte[] qd = createDNSQuery("flashair.local"); 
-        
+        byte[] qd = createDNSQuery(names);
+
         DatagramPacket q = new DatagramPacket(qd, qd.length, new InetSocketAddress(network.getBroadcast(), 5353));
 
         socket.send(q);
         byte[] buffer = new byte[1000];
 
-        
         int rest;
         long start = System.currentTimeMillis();
         List<ICard> result = new ArrayList<>();
         do {
+            DNSMessage message = receiveDNSMessage(socket, buffer);
+            if (message != null) {
+                for (int index = 0; index < message.getDnsHeader().getNumberOfEntriesInQuestionSection(); index++) {
+                    try {
+                        String fullQualifiedName = message.getPayload().getQuestion(0).getFullQualifiedDomainName();
+                        InetAddress ip = (InetAddress) message.getPayload().getAnswer(index).getPayload();
+                        result.add(new PotentialWifiSDCard(fullQualifiedName, ip));
+                    } catch (Exception e) {
+                        LOG.warn("did not undestand dns message {}", message);
+                    }
+                }
+            }
+            rest = 2000 - (int) (System.currentTimeMillis() - start);
+            if (rest > 0) {
+                socket.setSoTimeout(rest);
+            }
+        } while (rest > 0);
+        return result;
+
+    }
+
+    protected DNSMessage receiveDNSMessage(MulticastSocket socket, byte[] buffer) throws IOException {
+        try {
             DatagramPacket data = new DatagramPacket(buffer, buffer.length);
             socket.receive(data);
 
             byte[] packet = new byte[data.getLength()];
             packet = Arrays.copyOfRange(data.getData(), data.getOffset(), data.getLength() + data.getOffset());
             DNSMessage message = new DNSMessage();
-
             message.read(new ByteArrayInputStream(packet));
-
-            if (message.getDnsHeader().isResponse() && message.getPayload().getQuestion(0).getFullQualifiedDomainName().indexOf("flashair") >= 0) {
-                System.out.println(message.getPayload().getAnswer(0).getPayload());
-            }
-
-            rest = 2000 - (int) (System.currentTimeMillis() - start);
-            socket.setSoTimeout(rest);
-        } while (rest > 0);
-        return result;
-        
-        
-    
+            return message;
+        } catch (SocketTimeoutException timeout) {
+            return null;
+        }
     }
 
-    protected byte[] createDNSQuery(String fullQualifiedDomainName) throws IOException {
+    protected byte[] createDNSQuery(String[] names) throws IOException {
+
         DNSMessage message = new DNSMessage();
         message.getDnsHeader().setResponse(false);
-        message.getPayload().addQuestion(fullQualifiedDomainName);
+        for (String name : names) {
+            message.getPayload().addQuestion(name + ".local");
+        }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         message.write(out);
         byte[] qd = out.toByteArray();
