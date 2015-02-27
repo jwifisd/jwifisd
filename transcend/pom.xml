@@ -11,6 +11,11 @@
 	<description>${project.artifactId} Protocol implementation</description>
 	<packaging>jar</packaging>
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.4</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<site.basedir>${project.parent.basedir}</site.basedir>

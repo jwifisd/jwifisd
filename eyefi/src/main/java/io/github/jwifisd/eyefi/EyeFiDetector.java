@@ -1,8 +1,14 @@
-package io.github.jwifisd.api;
+package io.github.jwifisd.eyefi;
+
+import io.github.jwifisd.api.IDetector;
+import io.github.jwifisd.api.INotifier;
+import io.github.jwifisd.net.LocalNetwork;
+
+import java.io.IOException;
 
 /*
  * #%L
- * jwifisd-api
+ * jwifisd-eyefi
  * %%
  * Copyright (C) 2012 - 2015 jwifisd
  * %%
@@ -22,14 +28,21 @@ package io.github.jwifisd.api;
  * #L%
  */
 
-import io.github.jwifisd.net.LocalNetwork;
+public class EyeFiDetector implements IDetector {
 
-import java.io.IOException;
-import java.util.List;
+    boolean isScanning = false;
 
-public interface IDetector {
+    private EyeFiServer eyeFiServer;
 
-    void scan(LocalNetwork network, INotifier notifier, String... names) throws IOException;
+    @Override
+    public void scan(LocalNetwork network, INotifier notifier, String... names) throws IOException {
+        isScanning = true;
+        eyeFiServer = new EyeFiServer(notifier);
+        eyeFiServer.start();
+    }
 
-    boolean isScanning();
+    @Override
+    public boolean isScanning() {
+        return isScanning;
+    }
 }

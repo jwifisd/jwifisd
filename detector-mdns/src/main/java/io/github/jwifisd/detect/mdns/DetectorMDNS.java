@@ -22,8 +22,8 @@ package io.github.jwifisd.detect.mdns;
  * #L%
  */
 
-import io.github.jwifisd.api.ICard;
 import io.github.jwifisd.api.IDetector;
+import io.github.jwifisd.api.INotifier;
 import io.github.jwifisd.mdns.DNSMessage;
 import io.github.jwifisd.net.LocalNetwork;
 
@@ -36,57 +36,63 @@ import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DetectorMDNS implements IDetector {
 
+    boolean isScanning = false;
+
     private static final Logger LOG = LoggerFactory.getLogger(DetectorMDNS.class);
 
     @Override
-    public List<ICard> scan(LocalNetwork network, String... names) throws IOException {
+    public void scan(LocalNetwork network, INotifier notifier, String... names) throws IOException {
+        isScanning = true;
+        try {
+            MulticastSocket socket = new MulticastSocket(5353);
+            socket.setReuseAddress(true);
+            socket.setSoTimeout(2000);
 
-        MulticastSocket socket = new MulticastSocket(5353);
-        socket.setReuseAddress(true);
-        socket.setSoTimeout(2000);
+            NetworkInterface nic = NetworkInterface.getByInetAddress(network.getInterfaceIp());
+            socket.joinGroup(new InetSocketAddress("224.0.0.251", 5353), nic);
 
-        NetworkInterface nic = NetworkInterface.getByInetAddress(network.getInterfaceIp());
-        socket.joinGroup(new InetSocketAddress("224.0.0.251", 5353), nic);
+            byte[] qd = createDNSQuery(names);
 
-        byte[] qd = createDNSQuery(names);
+            DatagramPacket q = new DatagramPacket(qd, qd.length, new InetSocketAddress(network.getBroadcast(), 5353));
 
-        DatagramPacket q = new DatagramPacket(qd, qd.length, new InetSocketAddress(network.getBroadcast(), 5353));
+            socket.send(q);
+            byte[] buffer = new byte[1000];
 
-        socket.send(q);
-        byte[] buffer = new byte[1000];
-
-        int rest;
-        long start = System.currentTimeMillis();
-        List<ICard> result = new ArrayList<>();
-        do {
-            DNSMessage message = receiveDNSMessage(socket, buffer);
-            if (message != null) {
-                for (int index = 0; index < message.getDnsHeader().getNumberOfEntriesInQuestionSection(); index++) {
-                    try {
-                        String fullQualifiedName = message.getPayload().getQuestion(0).getFullQualifiedDomainName();
-                        InetAddress ip = (InetAddress) message.getPayload().getAnswer(index).getPayload();
-                        result.add(new PotentialWifiSDCard(fullQualifiedName, ip));
-                    } catch (Exception e) {
-                        LOG.warn("did not undestand dns message {}", message);
+            int rest;
+            long start = System.currentTimeMillis();
+            do {
+                DNSMessage message = receiveDNSMessage(socket, buffer);
+                if (message != null) {
+                    for (int index = 0; index < message.getDnsHeader().getNumberOfEntriesInQuestionSection(); index++) {
+                        try {
+                            String fullQualifiedName = message.getPayload().getQuestion(0).getFullQualifiedDomainName();
+                            InetAddress ip = (InetAddress) message.getPayload().getAnswer(index).getPayload();
+                            notifier.newCard(new PotentialWifiSDCard(fullQualifiedName, ip));
+                        } catch (Exception e) {
+                            LOG.warn("did not undestand dns message {}", message);
+                        }
                     }
                 }
-            }
-            rest = 2000 - (int) (System.currentTimeMillis() - start);
-            if (rest > 0) {
-                socket.setSoTimeout(rest);
-            }
-        } while (rest > 0);
-        return result;
+                rest = 2000 - (int) (System.currentTimeMillis() - start);
+                if (rest > 0) {
+                    socket.setSoTimeout(rest);
+                }
+            } while (rest > 0);
+        } finally {
+            isScanning = false;
+        }
+    }
 
+    @Override
+    public boolean isScanning() {
+        return isScanning;
     }
 
     protected DNSMessage receiveDNSMessage(MulticastSocket socket, byte[] buffer) throws IOException {
@@ -100,6 +106,9 @@ public class DetectorMDNS implements IDetector {
             message.read(new ByteArrayInputStream(packet));
             return message;
         } catch (SocketTimeoutException timeout) {
+            return null;
+        } catch (Exception e) {
+            LOG.warn("did not understand dns message, skipping it", e);
             return null;
         }
     }

@@ -38,7 +38,7 @@
 			<url>file://${java.io.tmpdir}/stage</url>
 		</site>
 	</distributionManagement>
-	<inceptionYear>2012</inceptionYear>
+	<inceptionYear>2015</inceptionYear>
 	<developers>
 		<developer>
 			<id>ritchie_gmx_at</id>
@@ -119,19 +119,6 @@
 				<configuration>
 					<mavenExecutorId>forked-path</mavenExecutorId>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.jboss.jandex</groupId>
-				<artifactId>jandex-maven-plugin</artifactId>
-				<version>1.0.1</version>
-				<executions>
-					<execution>
-						<id>make-index</id>
-						<goals>
-							<goal>jandex</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.tinyjee.dim</groupId>

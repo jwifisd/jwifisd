@@ -13,17 +13,18 @@ package io.github.jwifisd.all;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
 
 import io.github.jwifisd.api.ICard;
 import io.github.jwifisd.api.IDetector;
+import io.github.jwifisd.api.INotifier;
 import io.github.jwifisd.net.IDoWithNetwork;
 import io.github.jwifisd.net.LocalNetwork;
 import io.github.jwifisd.net.LocalNetworkScanner;
@@ -38,8 +39,9 @@ public class ScannAll implements IDoWithNetwork {
 
     public static void main(String[] args) throws IOException {
         LocalNetworkScanner scanner = new LocalNetworkScanner();
-
-        scanner.scan(new ScannAll());
+        while (true) {
+            scanner.scan(new ScannAll());
+        }
 
     }
 
@@ -50,13 +52,27 @@ public class ScannAll implements IDoWithNetwork {
         while (detectors.hasNext()) {
             IDetector iDetector = (IDetector) detectors.next();
             try {
-                result.addAll(iDetector.scan(localNetwork, "flashair", "transiend"));
+                if (!iDetector.isScanning()) {
+                    iDetector.scan(localNetwork, new INotifier() {
+
+                        @Override
+                        public void newFile(ICard card, byte[] file) {
+                        }
+
+                        @Override
+                        public void newCard(ICard card) {
+                            System.out.println("found: " + card.title() + " - " + card.ipAddress());
+                        }
+
+                        @Override
+                        public String getProperty(String string) {
+                            return null;
+                        }
+                    }, "flashair", "transiend");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        for (ICard iCard : result) {
-            System.out.println("found: " + iCard.title() + " - " + iCard.ipAddress());
         }
     }
 }

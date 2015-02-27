@@ -22,26 +22,27 @@ package io.github.jwifisd.detect55777;
  * #L%
  */
 
-import io.github.jwifisd.api.ICard;
 import io.github.jwifisd.api.IDetector;
+import io.github.jwifisd.api.INotifier;
 import io.github.jwifisd.net.LocalNetwork;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Detector55777 implements IDetector {
 
+    boolean isScanning = false;
+
     private static final Logger LOG = LoggerFactory.getLogger(Detector55777.class);
 
     @Override
-    public List<ICard> scan(LocalNetwork network, String... names) throws IOException {
+    public void scan(LocalNetwork network, INotifier notifier, String... names) throws IOException {
+        isScanning = true;
         try (DatagramSocket socket = new DatagramSocket(58255)) {
             socket.setReuseAddress(true);
             socket.setSoTimeout(2000);
@@ -54,26 +55,32 @@ public class Detector55777 implements IDetector {
 
             int rest;
             long start = System.currentTimeMillis();
-            List<ICard> result = new ArrayList<>();
             do {
                 try {
                     socket.receive(response);
-                    createCard(result, response);
+                    createCard(notifier, response);
                 } catch (SocketTimeoutException timeout) {
-                    return result;
+                    return;
                 }
                 rest = 2000 - (int) (System.currentTimeMillis() - start);
                 if (rest > 0) {
                     socket.setSoTimeout(rest);
                 }
             } while (rest > 0);
-            return result;
+            return;
+        } finally {
+            isScanning = false;
         }
     }
 
-    private void createCard(List<ICard> result, DatagramPacket response) {
+    @Override
+    public boolean isScanning() {
+        return isScanning;
+    }
+
+    private void createCard(INotifier notifier, DatagramPacket response) {
         try {
-            result.add(new PotentialWifiSDCard(response));
+            notifier.newCard(new PotentialWifiSDCard(response));
         } catch (Exception e) {
             LOG.error("could not analyse card, probably something else ...");
         }
