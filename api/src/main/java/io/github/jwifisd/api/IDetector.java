@@ -29,7 +29,9 @@ import java.util.List;
 
 public interface IDetector {
 
-    void scan(LocalNetwork network, INotifier notifier, String... names) throws IOException;
+    void scan(LocalNetwork network, INotifier notifier) throws IOException;
 
     boolean isScanning();
+
+    void stop();
 }

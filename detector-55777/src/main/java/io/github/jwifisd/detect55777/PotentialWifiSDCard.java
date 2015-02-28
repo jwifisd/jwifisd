@@ -134,4 +134,9 @@ public class PotentialWifiSDCard implements ICard {
     public String title() {
         return title;
     }
+    
+    @Override
+    public int level() {
+        return 100;
+    }
 }

@@ -23,56 +23,25 @@ package io.github.jwifisd.all;
  */
 
 import io.github.jwifisd.api.ICard;
-import io.github.jwifisd.api.IDetector;
-import io.github.jwifisd.api.INotifier;
-import io.github.jwifisd.net.IDoWithNetwork;
-import io.github.jwifisd.net.LocalNetwork;
-import io.github.jwifisd.net.LocalNetworkScanner;
+import io.github.jwifisd.impl.CardManager;
+import io.github.jwifisd.impl.ICardListener;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ServiceLoader;
 
-public class ScannAll implements IDoWithNetwork {
+public class ScannAll {
 
-    public static void main(String[] args) throws IOException {
-        LocalNetworkScanner scanner = new LocalNetworkScanner();
-        while (true) {
-            scanner.scan(new ScannAll());
-        }
+    public static void main(String[] args) throws IOException, InterruptedException {
+        CardManager.getInstance().addListener(new ICardListener() {
 
-    }
+            @Override
+            public void newCard(ICard card) {
+                System.out.println("new Card " + card.title());
 
-    @Override
-    public void run(LocalNetwork localNetwork) {
-        List<ICard> result = new ArrayList<>();
-        Iterator<IDetector> detectors = ServiceLoader.load(IDetector.class).iterator();
-        while (detectors.hasNext()) {
-            IDetector iDetector = (IDetector) detectors.next();
-            try {
-                if (!iDetector.isScanning()) {
-                    iDetector.scan(localNetwork, new INotifier() {
-
-                        @Override
-                        public void newFile(ICard card, byte[] file) {
-                        }
-
-                        @Override
-                        public void newCard(ICard card) {
-                            System.out.println("found: " + card.title() + " - " + card.ipAddress());
-                        }
-
-                        @Override
-                        public String getProperty(String string) {
-                            return null;
-                        }
-                    }, "flashair", "transiend");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        });
+        while (true) {
+            Thread.sleep(500);
         }
     }
+
 }

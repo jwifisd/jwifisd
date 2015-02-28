@@ -30,19 +30,48 @@ import java.io.IOException;
 
 public class EyeFiDetector implements IDetector {
 
-    boolean isScanning = false;
+    private static class RealEyeFiDetector implements IDetector {
 
-    private EyeFiServer eyeFiServer;
+        boolean isScanning = false;
+
+        private EyeFiServer eyeFiServer;
+
+        private RealEyeFiDetector() {
+        }
+
+        @Override
+        public void scan(LocalNetwork network, INotifier notifier) throws IOException {
+            isScanning = true;
+            eyeFiServer = new EyeFiServer(notifier);
+            eyeFiServer.start();
+        }
+
+        @Override
+        public boolean isScanning() {
+            return isScanning;
+        }
+
+        @Override
+        public void stop() {
+            eyeFiServer.stop();
+            isScanning = false;
+        }
+    }
+
+    private static RealEyeFiDetector SINGLETON = new RealEyeFiDetector();
 
     @Override
-    public void scan(LocalNetwork network, INotifier notifier, String... names) throws IOException {
-        isScanning = true;
-        eyeFiServer = new EyeFiServer(notifier);
-        eyeFiServer.start();
+    public void scan(LocalNetwork network, INotifier notifier) throws IOException {
+        SINGLETON.scan(network, notifier);
     }
 
     @Override
     public boolean isScanning() {
-        return isScanning;
+        return SINGLETON.isScanning();
+    }
+
+    @Override
+    public void stop() {
+        SINGLETON.stop();
     }
 }

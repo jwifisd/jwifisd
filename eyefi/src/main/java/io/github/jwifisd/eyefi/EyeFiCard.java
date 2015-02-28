@@ -60,4 +60,9 @@ public class EyeFiCard implements ICard {
         return null;
     }
 
+    @Override
+    public int level() {
+        return 0;
+    }
+
 }

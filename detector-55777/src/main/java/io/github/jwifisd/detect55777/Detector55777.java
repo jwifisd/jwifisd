@@ -41,7 +41,7 @@ public class Detector55777 implements IDetector {
     private static final Logger LOG = LoggerFactory.getLogger(Detector55777.class);
 
     @Override
-    public void scan(LocalNetwork network, INotifier notifier, String... names) throws IOException {
+    public void scan(LocalNetwork network, INotifier notifier) throws IOException {
         isScanning = true;
         try (DatagramSocket socket = new DatagramSocket(58255)) {
             socket.setReuseAddress(true);
@@ -84,5 +84,9 @@ public class Detector55777 implements IDetector {
         } catch (Exception e) {
             LOG.error("could not analyse card, probably something else ...");
         }
+    }
+
+    @Override
+    public void stop() {
     }
 }

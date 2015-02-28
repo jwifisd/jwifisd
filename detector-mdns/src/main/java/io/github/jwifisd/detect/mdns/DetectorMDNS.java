@@ -48,8 +48,10 @@ public class DetectorMDNS implements IDetector {
     private static final Logger LOG = LoggerFactory.getLogger(DetectorMDNS.class);
 
     @Override
-    public void scan(LocalNetwork network, INotifier notifier, String... names) throws IOException {
+    public void scan(LocalNetwork network, INotifier notifier) throws IOException {
         isScanning = true;
+        String searchNames = notifier.getProperty("mdns.names");
+        String[] names = searchNames.split(",");
         try {
             MulticastSocket socket = new MulticastSocket(5353);
             socket.setReuseAddress(true);
@@ -124,6 +126,10 @@ public class DetectorMDNS implements IDetector {
         message.write(out);
         byte[] qd = out.toByteArray();
         return qd;
+    }
+
+    @Override
+    public void stop() {
     }
 
 }
