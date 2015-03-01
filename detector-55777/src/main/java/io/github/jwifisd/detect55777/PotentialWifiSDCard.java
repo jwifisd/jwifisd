@@ -13,11 +13,11 @@ package io.github.jwifisd.detect55777;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -48,14 +48,13 @@ public class PotentialWifiSDCard implements ICard {
 
     private String essid;
 
+    private String id;
+
     public PotentialWifiSDCard(DatagramPacket response) {
         byte[] packet = new byte[response.getLength()];
         packet = Arrays.copyOfRange(response.getData(), response.getOffset(), response.getLength() + response.getOffset());
         String packetString = new String(packet, Charset.forName("UTF-8"));
-        if (packetString.indexOf("Transcend WiFiSD") < 0) {
-            // ok some other card stop this.
-            throw new IllegalArgumentException("This is no Transcend card");
-        }
+        this.ip = response.getAddress();
         BufferedReader reader = new BufferedReader(new StringReader(packetString));
         String line;
         try {
@@ -65,7 +64,7 @@ public class PotentialWifiSDCard implements ICard {
                     String key = line.substring(0, equalPos);
                     String value = line.substring(equalPos + 1).trim();
                     if (key.equalsIgnoreCase("ip")) {
-                        this.ip = InetAddress.getByName(value);
+                        // this.ip = InetAddress.getByName(value);
                     } else if (key.equalsIgnoreCase("netmask")) {
                         this.netmask = InetAddress.getByName(value);
                     } else if (key.equalsIgnoreCase("router")) {
@@ -74,6 +73,8 @@ public class PotentialWifiSDCard implements ICard {
                         this.mode = value;
                     } else if (key.equalsIgnoreCase("essid")) {
                         this.essid = value;
+                    } else if (line.indexOf(' ') < equalPos && title == null && !line.trim().isEmpty()) {
+                        this.title = line.trim();
                     }
                 }
             }
@@ -81,11 +82,12 @@ public class PotentialWifiSDCard implements ICard {
             // its a string so this can not happen..
             throw new IllegalStateException("io exception in strean reading?", e);
         }
+        id = this.ip.getHostAddress();
     }
 
     @Override
     public String toString() {
-        StringBuffer result = new StringBuffer("Transcend WiFiSD {");
+        StringBuffer result = new StringBuffer("55777 type WiFiSD {");
         if (ip != null) {
             result.append("\n\tip=");
             result.append(ip.getHostAddress());
@@ -110,11 +112,6 @@ public class PotentialWifiSDCard implements ICard {
         return result.toString();
     }
 
-    /**
-     * Transcend WiFiSD - interface=mlan0 ip=192.168.11.254
-     * netmask=255.255.255.0 router=0.0.0.0 mode=server essid=WIFISD
-     */
-
     @Override
     public IBrowse browse() {
         return null;
@@ -134,9 +131,20 @@ public class PotentialWifiSDCard implements ICard {
     public String title() {
         return title;
     }
-    
+
     @Override
     public int level() {
         return 100;
+    }
+
+    @Override
+    public String id() {
+        return title;
+    }
+
+    @Override
+    public void reconnect() {
+        // TODO Auto-generated method stub
+
     }
 }

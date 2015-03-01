@@ -71,4 +71,15 @@ public class PotentialWifiSDCard implements ICard {
     public int level() {
         return 100;
     }
+
+    @Override
+    public String id() {
+        return fullQualifiedName;
+    }
+
+    @Override
+    public void reconnect() {
+        // TODO Auto-generated method stub
+
+    }
 }

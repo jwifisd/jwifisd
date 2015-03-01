@@ -4,7 +4,7 @@ package io.github.jwifisd.api;
  * #%L
  * jwifisd-api
  * %%
- * Copyright (C) 2012 - 2015 jwifisd
+ * Copyright (C) 2015 jwifisd
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -13,35 +13,16 @@ package io.github.jwifisd.api;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program. If not, see
+ * License along with this program.  If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
 
-import java.net.InetAddress;
+public interface ICardImplentation {
 
-public interface ICard {
-
-    String title();
-
-    String id();
-
-    InetAddress ipAddress();
-
-    IBrowse browse();
-
-    IEvent event();
-
-    /**
-     * @return the api level of the card, all levels below 10 are not real cards
-     *         but just potential cards. a level 0 is an end implementation and
-     *         can be used.
-     */
-    int level();
-
-    void reconnect();
+    ICard decreaseLevel(ICard card);
 }
