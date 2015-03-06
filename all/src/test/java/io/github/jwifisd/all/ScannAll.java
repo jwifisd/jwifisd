@@ -23,6 +23,8 @@ package io.github.jwifisd.all;
  */
 
 import io.github.jwifisd.api.ICard;
+import io.github.jwifisd.api.IFileListener;
+import io.github.jwifisd.api.IWifiFile;
 import io.github.jwifisd.impl.CardManager;
 import io.github.jwifisd.impl.ICardListener;
 
@@ -35,8 +37,16 @@ public class ScannAll {
 
             @Override
             public void newCard(ICard card) {
-                System.out.println("new Card " + card.title());
+                System.out.println("new Card " + card.title() + " mac: " + card.mac());
 
+            }
+        });
+        CardManager.getInstance().addListener(new IFileListener() {
+
+            @Override
+            public void notifyNewFile(ICard card, IWifiFile wifiFile) {
+                byte[] data = wifiFile.getData();
+                System.out.println("file of Card " + card.title() + " mac: " + card.mac() + " file: " + wifiFile.name() + " size: " + (data == null ? "null" : data.length));
             }
         });
         while (true) {

@@ -13,19 +13,20 @@ package io.github.jwifisd.eyefi;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
 
-import io.github.jwifisd.api.ICard;
 import io.github.jwifisd.api.INotifier;
+import io.github.jwifisd.impl.CardManager;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -52,9 +53,7 @@ public class EyeFiServer extends NanoHTTPD {
 
     private static final String DEFAULT_UPLOADKEY = "00000000000000000000000000000000";
 
-    INotifier notifier;
-
-    static int counter = 0;
+    private INotifier notifier;
 
     class EyeFiUploadFile {
 
@@ -123,8 +122,11 @@ public class EyeFiServer extends NanoHTTPD {
     private Response uploadPhoto(EyeFiUploadFile context) throws Exception {
         UploadPhotoRequest uploadRequest = new UploadPhotoRequest(context.soapEnvelope);
         System.out.println(uploadRequest.toString());
-        OutputStream fout = new FileOutputStream(new File("target", uploadRequest.filename.replace(".tar", "")));
-        return new UploadPhotoResponse(extractTarFile(context.eyefiFile, fout));
+        String fileName = uploadRequest.filename.replace(".tar", "");
+        ByteArrayOutputStream fout = new ByteArrayOutputStream();
+        boolean extraced = extractTarFile(context.eyefiFile, fout);
+        ((CardManager) CardManager.getInstance()).reportNewFile(cards.get(uploadRequest.macaddress), new EyeFiPhoto(fileName, fout.toByteArray()));
+        return new UploadPhotoResponse(extraced);
     }
 
     private boolean extractTarFile(File tarFile, OutputStream out) throws IOException, FileNotFoundException, UnsupportedEncodingException {
@@ -151,9 +153,9 @@ public class EyeFiServer extends NanoHTTPD {
         return result;
     }
 
-    int photoStatusId = 1;
+    private int photoStatusId = 1;
 
-    Map<Integer, PhotoStatusRequest> photoStatuses = new HashMap<>();
+    private Map<Integer, PhotoStatusRequest> photoStatuses = new HashMap<>();
 
     private Response getPhotoStatus(Map<String, String> parms, Map<String, String> files) throws Exception {
         PhotoStatusRequest photoStatus = new PhotoStatusRequest(files.get("postData"));
@@ -172,7 +174,7 @@ public class EyeFiServer extends NanoHTTPD {
         return new StartSessionResponse(Hex.encodeHexString(credential), startSession.cnonce, startSession.transfermode, startSession.transfermodetimestamp);
     }
 
-    Map<String, EyeFiCard> cards = new HashMap<>();
+    private Map<String, EyeFiCard> cards = new HashMap<>();
 
     private void registerCart(StartSessionRequest startSession) throws UnknownHostException {
         EyeFiCard card = cards.get(startSession.macaddress);

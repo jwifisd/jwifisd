@@ -24,7 +24,8 @@ package io.github.jwifisd.detect.mdns;
 
 import io.github.jwifisd.api.IBrowse;
 import io.github.jwifisd.api.ICard;
-import io.github.jwifisd.api.IEvent;
+import io.github.jwifisd.api.IFileListener;
+import io.github.jwifisd.net.arp.ARPControl;
 
 import java.net.InetAddress;
 
@@ -33,6 +34,8 @@ public class PotentialWifiSDCard implements ICard {
     private final String fullQualifiedName;
 
     private final InetAddress ip;
+
+    private String mac;
 
     public PotentialWifiSDCard(String fullQualifiedName, InetAddress ip) {
         this.fullQualifiedName = fullQualifiedName;
@@ -63,23 +66,35 @@ public class PotentialWifiSDCard implements ICard {
     }
 
     @Override
-    public IEvent event() {
-        return null;
-    }
-
-    @Override
     public int level() {
         return 100;
     }
 
     @Override
-    public String id() {
-        return fullQualifiedName;
+    public String mac() {
+        if (mac == null) {
+            try {
+                mac = ARPControl.macAdressOf(this.ip);
+            } catch (Exception e) {
+                // TODO: log this event
+                mac = "00:00:00:00:00:00";
+            }
+        }
+        return mac;
     }
 
     @Override
     public void reconnect() {
-        // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public boolean addListener(IFileListener fileListener) {
+        return false;
+    }
+
+    @Override
+    public boolean removeListener(IFileListener fileListener) {
+        return false;
     }
 }

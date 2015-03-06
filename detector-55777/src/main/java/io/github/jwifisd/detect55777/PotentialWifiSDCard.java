@@ -24,7 +24,8 @@ package io.github.jwifisd.detect55777;
 
 import io.github.jwifisd.api.IBrowse;
 import io.github.jwifisd.api.ICard;
-import io.github.jwifisd.api.IEvent;
+import io.github.jwifisd.api.IFileListener;
+import io.github.jwifisd.net.arp.ARPControl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,6 +34,9 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PotentialWifiSDCard implements ICard {
 
@@ -48,7 +52,7 @@ public class PotentialWifiSDCard implements ICard {
 
     private String essid;
 
-    private String id;
+    private String mac;
 
     public PotentialWifiSDCard(DatagramPacket response) {
         byte[] packet = new byte[response.getLength()];
@@ -78,11 +82,11 @@ public class PotentialWifiSDCard implements ICard {
                     }
                 }
             }
-        } catch (IOException e) {
+            mac = ARPControl.macAdressOf(this.ip);
+        } catch (Exception e) {
             // its a string so this can not happen..
             throw new IllegalStateException("io exception in strean reading?", e);
         }
-        id = this.ip.getHostAddress();
     }
 
     @Override
@@ -118,11 +122,6 @@ public class PotentialWifiSDCard implements ICard {
     }
 
     @Override
-    public IEvent event() {
-        return null;
-    }
-
-    @Override
     public InetAddress ipAddress() {
         return ip;
     }
@@ -138,13 +137,21 @@ public class PotentialWifiSDCard implements ICard {
     }
 
     @Override
-    public String id() {
-        return title;
+    public String mac() {
+        return mac;
     }
 
     @Override
     public void reconnect() {
-        // TODO Auto-generated method stub
+    }
 
+    @Override
+    public boolean addListener(IFileListener fileListener) {
+        return false;
+    }
+
+    @Override
+    public boolean removeListener(IFileListener fileListener) {
+        return false;
     }
 }

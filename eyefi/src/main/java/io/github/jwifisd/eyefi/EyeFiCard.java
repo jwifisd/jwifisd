@@ -24,10 +24,13 @@ package io.github.jwifisd.eyefi;
 
 import io.github.jwifisd.api.IBrowse;
 import io.github.jwifisd.api.ICard;
-import io.github.jwifisd.api.IEvent;
+import io.github.jwifisd.api.IFileListener;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EyeFiCard implements ICard {
 
@@ -52,11 +55,7 @@ public class EyeFiCard implements ICard {
 
     @Override
     public IBrowse browse() {
-        return null;
-    }
-
-    @Override
-    public IEvent event() {
+        // not supported
         return null;
     }
 
@@ -66,7 +65,7 @@ public class EyeFiCard implements ICard {
     }
 
     @Override
-    public String id() {
+    public String mac() {
         return startSession.macaddress;
     }
 
@@ -75,4 +74,16 @@ public class EyeFiCard implements ICard {
 
     }
 
+    private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
+
+    @Override
+    public boolean addListener(IFileListener fileListener) {
+        fileListeners.add(fileListener);
+        return true;
+    }
+
+    @Override
+    public boolean removeListener(IFileListener fileListener) {
+        return fileListeners.remove(fileListener);
+    }
 }

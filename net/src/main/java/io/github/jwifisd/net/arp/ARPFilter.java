@@ -1,8 +1,8 @@
-package io.github.jwifisd.api;
+package io.github.jwifisd.net.arp;
 
 /*
  * #%L
- * jwifisd-api
+ * jwifisd-net
  * %%
  * Copyright (C) 2015 jwifisd
  * %%
@@ -22,16 +22,7 @@ package io.github.jwifisd.api;
  * #L%
  */
 
-import io.github.jwifisd.impl.ICardListener;
+public interface ARPFilter {
 
-public interface ICardManager {
-
-    void addListener(IFileListener fileListener);
-
-    void addListener(ICardListener cardListener);
-
-    void removeListener(IFileListener fileListener);
-
-    void removeListener(ICardListener cardListener);
-
+    boolean accep(ARP arp);
 }

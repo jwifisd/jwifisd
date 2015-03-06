@@ -13,11 +13,11 @@ package io.github.jwifisd.impl;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -28,6 +28,7 @@ import io.github.jwifisd.api.ICardManager;
 import io.github.jwifisd.api.IDetector;
 import io.github.jwifisd.api.IFileListener;
 import io.github.jwifisd.api.INotifier;
+import io.github.jwifisd.api.IWifiFile;
 import io.github.jwifisd.net.IDoWithNetwork;
 import io.github.jwifisd.net.LocalNetwork;
 import io.github.jwifisd.net.LocalNetworkScanner;
@@ -58,6 +59,8 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork {
     private static final Logger LOG = LoggerFactory.getLogger(CardManager.class);
 
     private static final ICardListener[] EMPTY_CARDS = new ICardListener[0];
+
+    private static final IFileListener[] EMPTY_FILES = new IFileListener[0];
 
     private static final HashMap<String, ICard> currentCards = new HashMap<>();
 
@@ -95,7 +98,7 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork {
     }
 
     private synchronized void start() {
-        if (!fileListeners.isEmpty() || !cardListeners.isEmpty()) {
+        if (running == null && (!fileListeners.isEmpty() || !cardListeners.isEmpty())) {
             running = new Thread(this, "Wifi SD Card Manager");
             running.start();
         }
@@ -141,8 +144,8 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork {
     }
 
     protected synchronized void newCard(ICard card) {
-        ICard existingCard = currentCards.get(card.id());
-        if (existingCard != null && existingCard.id() != null) {
+        ICard existingCard = currentCards.get(card.mac());
+        if (existingCard != null && existingCard.mac() != null) {
             existingCard.reconnect();
             return;
         }
@@ -150,7 +153,7 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork {
         for (ICardListener cardListener : cardListeners.toArray(EMPTY_CARDS)) {
             cardListener.newCard(card);
         }
-        currentCards.put(card.id(), card);
+        currentCards.put(card.mac(), card);
     }
 
     protected ICard deepFindBetterImplementation(ICard card) {
@@ -196,6 +199,12 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork {
             } catch (Exception e) {
                 LOG.error("card detector stop failed", e);
             }
+        }
+    }
+
+    public void reportNewFile(ICard card, IWifiFile wifiFile) {
+        for (IFileListener fileListener : fileListeners.toArray(EMPTY_FILES)) {
+            fileListener.notifyNewFile(card, wifiFile);
         }
     }
 }

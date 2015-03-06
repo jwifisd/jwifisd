@@ -28,13 +28,15 @@ public interface ICard {
 
     String title();
 
-    String id();
+    String mac();
 
     InetAddress ipAddress();
 
     IBrowse browse();
 
-    IEvent event();
+    boolean addListener(IFileListener fileListener);
+
+    boolean removeListener(IFileListener fileListener);
 
     /**
      * @return the api level of the card, all levels below 10 are not real cards

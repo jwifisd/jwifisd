@@ -24,14 +24,18 @@ package io.github.jwifisd.transcend;
 
 import io.github.jwifisd.api.IBrowse;
 import io.github.jwifisd.api.ICard;
-import io.github.jwifisd.api.IEvent;
+import io.github.jwifisd.api.IFileListener;
+import io.github.jwifisd.impl.CardManager;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URI;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -42,8 +46,12 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TranscendWiFiSD implements ICard, Runnable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(TranscendWiFiSD.class);
 
     public static final int CARD_LEVEL = 1;
 
@@ -83,53 +91,40 @@ public class TranscendWiFiSD implements ICard, Runnable {
     }
 
     @Override
-    public IEvent event() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public int level() {
         return CARD_LEVEL;
     }
 
     @Override
-    public String id() {
-        return potentialCard.id();
+    public String mac() {
+        return potentialCard.mac();
     }
 
     @Override
     public void run() {
         try {
-            byte[] buffer = new byte[1024 * 16];
             InputStream inputStream = westec.getInputStream();
-            int offset = 0;
-            while (thread == Thread.currentThread()) {
-                int count = inputStream.read(buffer, offset, buffer.length - offset);
-                int size = count + offset;
-                int start = -1;
-                int end = -1;
-                for (int index = 0; index < size; index++) {
-                    if (buffer[index] == '>') {
-                        start = index;
-                    } else if (buffer[index] == '<') {
-                        start = index;
+            int oneByte;
+
+            ByteArrayOutputStream lineBytes = new ByteArrayOutputStream();
+            while (thread == Thread.currentThread() && (oneByte = inputStream.read()) >= 0) {
+                if (oneByte != 0) {
+                    lineBytes.write(oneByte);
+                } else {
+                    // line komplete
+                    byte[] lineByteArray = lineBytes.toByteArray();
+                    int offset = 0;
+                    while (lineByteArray[offset] == '>' || lineByteArray[offset] == '<') {
+                        offset++;
                     }
-                    if (start >= 0 && buffer[index] == '\0') {
-                        end = index;
-                        String file = new String(buffer, start + 1, end - start - 1, "UTF-8");
-                        TranscendWifiSDFile wifiFile = new TranscendWifiSDFile(this, file);
-                        wifiFile.getData();
-                        System.arraycopy(buffer, end + 1, buffer, 0, buffer.length - end - 1);
-                        offset = offset - end - 1;
-                        start = -1;
-                    }
+                    String line = new String(lineByteArray, offset, lineByteArray.length - offset, "UTF-8");
+                    TranscendWifiSDFile wifiFile = new TranscendWifiSDFile(this, line);
+                    ((CardManager) CardManager.getInstance()).reportNewFile(this, wifiFile);
+                    lineBytes.reset();
                 }
-                offset = offset + count;
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            // TODO log
+            LOG.error("TranscendWiFiSD event channel broke!", e);
         } finally {
             thread = null;
         }
@@ -141,7 +136,7 @@ public class TranscendWiFiSD implements ICard, Runnable {
             try {
                 startListening(new Socket(ipAddress(), 5577));
             } catch (IOException e) {
-                // todo log
+                LOG.error("TranscendWiFiSD event channel could not reconnect!", e);
             }
         }
     }
@@ -162,7 +157,9 @@ public class TranscendWiFiSD implements ICard, Runnable {
                     .build();
             HttpGet httpget = new HttpGet(uri);
 
-            System.out.println("Executing request " + httpget.getRequestLine());
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Executing request " + httpget.getRequestLine());
+            }
 
             // Create a custom response handler
             ResponseHandler<byte[]> responseHandler = new ResponseHandler<byte[]>() {
@@ -181,11 +178,21 @@ public class TranscendWiFiSD implements ICard, Runnable {
             };
             byte[] responseBody = httpclient.execute(httpget, responseHandler);
             wifiFile.setData(responseBody);
-            FileOutputStream out = new FileOutputStream("target/" + fileName);
-            out.write(responseBody);
-            out.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOG.error("TranscendWiFiSD could not download file data!", e);
         }
+    }
+
+    private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
+
+    @Override
+    public boolean addListener(IFileListener fileListener) {
+        fileListeners.add(fileListener);
+        return true;
+    }
+
+    @Override
+    public boolean removeListener(IFileListener fileListener) {
+        return fileListeners.remove(fileListener);
     }
 }
