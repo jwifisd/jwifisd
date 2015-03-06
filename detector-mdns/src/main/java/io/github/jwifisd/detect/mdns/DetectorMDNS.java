@@ -110,7 +110,15 @@ public class DetectorMDNS implements IDetector {
         } catch (SocketTimeoutException timeout) {
             return null;
         } catch (Exception e) {
-            LOG.warn("did not understand dns message, skipping it", e);
+            StringBuffer message = new StringBuffer();
+            for (int index = 0; index < buffer.length; index++) {
+                String hexString = Integer.toHexString(buffer[index] & 0xFF);
+                if (hexString.length() < 2) {
+                    message.append('0');
+                }
+                message.append(hexString);
+            }
+            LOG.warn("did not understand dns message, skipping it " + message, e);
             return null;
         }
     }

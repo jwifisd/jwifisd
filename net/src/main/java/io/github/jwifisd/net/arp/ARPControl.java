@@ -13,11 +13,11 @@ package io.github.jwifisd.net.arp;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Locale;
@@ -36,8 +37,12 @@ import java.util.regex.Pattern;
 
 public class ARPControl {
 
+    private static final int ECHO_PROTOKOL = 7;
+
     private static final Pattern IP_ADRESS_REGEX = Pattern
             .compile("([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])");
+
+    private static final Pattern IP_BYTE_REGEX = Pattern.compile("([01]?\\d\\d?|2[0-4]\\d|25[0-5])");
 
     private static final Pattern MAC_ADRESS_REGEX = Pattern.compile("([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})");
 
@@ -57,9 +62,48 @@ public class ARPControl {
             }
         });
         if (arps.isEmpty()) {
+            // ok lets try to trigger a arp lookup
+            triggerArpLookup(address);
+            arps = scanArpCache(new ARPFilter() {
+
+                @Override
+                public boolean accep(ARP arp) {
+                    return arp.getIpAdress().equals(address);
+                }
+            });
+        }
+        if (arps.isEmpty()) {
             return null;
         } else {
             return arps.iterator().next().getMacAdress();
+        }
+    }
+
+    public static void triggerArpLookup(final InetAddress address) {
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                Socket socket = null;
+                try {
+                    socket = new Socket(address, ECHO_PROTOKOL);
+                    socket.setSoTimeout(1000);
+                    socket.close();
+                } catch (Exception e) {
+                    if (socket != null) {
+                        try {
+                            socket.close();
+                        } catch (Exception e1) {
+                            // ignore this
+                        }
+                    }
+                }
+            }
+        }, "arp lookup trigger").start();
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            return;
         }
     }
 
@@ -88,16 +132,36 @@ public class ARPControl {
             arp.setMacAdress(line.substring(matcher.start(), matcher.end() + 1).trim().replace('-', ':'));
             Matcher matcherIp = IP_ADRESS_REGEX.matcher(line);
             if (matcherIp.find()) {
+                String hostIpString = line.substring(matcherIp.start(), matcherIp.end() + 1).trim();
                 try {
-                    arp.setIpAdress(InetAddress.getByName(line.substring(matcherIp.start(), matcherIp.end() + 1).trim()));
+                    arp.setIpAdress(InetAddress.getByAddress(copvertIpDottedNameToByteAdress(hostIpString)));
                 } catch (UnknownHostException e) {
-                    // igonre line
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
         }
         if (arp.getIpAdress() != null && arp.getMacAdress() != null && (filter == null || filter.accep(arp))) {
             arps.add(arp);
         }
+    }
+
+    public static byte[] copvertIpDottedNameToByteAdress(String hostIpString) {
+        byte[] ipAdressInBytes = new byte[4];
+        StringBuffer buffer = new StringBuffer();
+        int index = 0;
+        for (char character : hostIpString.toCharArray()) {
+            if (Character.isDigit(character)) {
+                buffer.append(character);
+            } else {
+                ipAdressInBytes[index++] = (byte) Integer.parseInt(buffer.toString());
+                buffer.setLength(0);
+            }
+        }
+        if (index < 4) {
+            ipAdressInBytes[index++] = (byte) Integer.parseInt(buffer.toString());
+        }
+        return ipAdressInBytes;
     }
 
     private static boolean isWindows() {

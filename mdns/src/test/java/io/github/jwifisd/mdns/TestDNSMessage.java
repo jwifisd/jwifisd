@@ -13,11 +13,11 @@ package io.github.jwifisd.mdns;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -90,6 +90,11 @@ public class TestDNSMessage {
         message.write(out);
         Assert.assertEquals(messages[0], Hex.encodeHexString(out.toByteArray()));
 
+    }
+    @Test
+    public void testStrangeMessage() throws Exception {
+        //TODO implement this message (should not throw an exception...
+        String message = "000000000002000000000000055f69707073045f746370056c6f63616c00000c0001045f697070c012000c0001a800010000010001000000000000";
     }
 
 }
