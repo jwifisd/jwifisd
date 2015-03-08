@@ -21,29 +21,45 @@ package io.github.jwifisd.api;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
+/**
+ * Internal card notifier interface between detectors and the card manager. To
+ * report newly detected cards to the card manager.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public interface INotifier {
 
+    /**
+     * empty notifier implementation to avoid null checks.
+     */
     public static INotifier DUMMY = new INotifier() {
-
-        @Override
-        public void newFile(ICard card, byte[] file) {
-        }
-
-        @Override
-        public void newCard(ICard card) {
-        }
 
         @Override
         public String getProperty(String string) {
             return null;
         }
+
+        @Override
+        public void newCard(ICard card) {
+        }
     };
 
-    void newCard(ICard card);
-
-    void newFile(ICard card, byte[] file);
-
+    /**
+     * If a detector needs some configuration, it should use this method to get
+     * the setting.
+     * 
+     * @param key
+     *            the property key to get.
+     * @return the string value of the property
+     */
     String getProperty(String string);
+
+    /**
+     * report the detection of a new card.
+     * 
+     * @param card
+     *            the newly detected card.
+     */
+    void newCard(ICard card);
 
 }

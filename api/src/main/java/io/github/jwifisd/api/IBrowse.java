@@ -1,5 +1,7 @@
 package io.github.jwifisd.api;
 
+import java.util.List;
+
 /*
  * #%L
  * jwifisd-api
@@ -21,7 +23,32 @@ package io.github.jwifisd.api;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
+/**
+ * This is a card api that allows active (without events) browsing of files and
+ * directories. Not all cards support this way of access.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public interface IBrowse {
+
+    /**
+     * List all directories unter the specified directory. Only directories are
+     * returned all normal files are omitted.
+     * 
+     * @param directory
+     *            the directory to scan.
+     * @return the list of directories under this directory.
+     */
+    List<String> listDirectories(String directory);
+
+    /**
+     * List all files in the specified directory. Only files are returned all
+     * directories are omitted.
+     * 
+     * @param directory
+     *            the directory to scan.
+     * @return the list of files in this directory.
+     */
+    List<IWifiFile> listFiles(String directory);
 
 }

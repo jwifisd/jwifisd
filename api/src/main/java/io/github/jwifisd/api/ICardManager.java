@@ -22,16 +22,60 @@ package io.github.jwifisd.api;
  * #L%
  */
 
+import io.github.jwifisd.impl.CardManager;
 import io.github.jwifisd.impl.ICardListener;
 
+import java.util.Properties;
+
+/**
+ * This is the card manager api, that is the stating point for all access to
+ * wifi cards, There will be only one active instance/implementation of theis
+ * interface. Access it by calling {@link CardManager#getInstance()}
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public interface ICardManager {
 
-    void addListener(IFileListener fileListener);
-
+    /**
+     * Add a listener for newly detected cards, cards that come in reach of the
+     * software.
+     * 
+     * @param cardListener
+     *            the listener to add.
+     */
     void addListener(ICardListener cardListener);
 
+    /**
+     * Add a listener for new files. this listener will be called if any new
+     * file is detected on any card in reach.
+     * 
+     * @param fileListener
+     *            the listener to add.
+     */
+    void addListener(IFileListener fileListener);
+
+    /**
+     * Stop listening for new cards.
+     * 
+     * @param cardListener
+     *            the listener to remove.
+     */
+    void removeListener(ICardListener cardListener);
+
+    /**
+     * Stop listening for new files.
+     * 
+     * @param fileListener
+     *            the listener to remove.
+     */
     void removeListener(IFileListener fileListener);
 
-    void removeListener(ICardListener cardListener);
+    /**
+     * set properties for detetors and cards.
+     * 
+     * @param properties
+     *            the properties to set.
+     */
+    void setProperties(Properties properties);
 
 }

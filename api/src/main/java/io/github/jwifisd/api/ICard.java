@@ -24,19 +24,34 @@ package io.github.jwifisd.api;
 
 import java.net.InetAddress;
 
+/**
+ * Generic api for all available wifi cards.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public interface ICard {
 
-    String title();
-
-    String mac();
-
-    InetAddress ipAddress();
-
-    IBrowse browse();
-
+    /**
+     * Add a file listener to the card that will get notified if a new file was
+     * detected on the card.
+     * 
+     * @param fileListener
+     *            the fiel listener to activate.
+     * @return true if the listener was installed. false will hapen if the card
+     *         is not capable of detecting new files
+     */
     boolean addListener(IFileListener fileListener);
 
-    boolean removeListener(IFileListener fileListener);
+    /**
+     * @return the browser api to access the card, null if the card does not
+     *         support browsing.
+     */
+    IBrowse browse();
+
+    /**
+     * @return the current ip adress of the card.
+     */
+    InetAddress ipAddress();
 
     /**
      * @return the api level of the card, all levels below 10 are not real cards
@@ -45,6 +60,28 @@ public interface ICard {
      */
     int level();
 
+    /**
+     * @return the network mac adress of the card.
+     */
+    String mac();
+
+    /**
+     * break the connection and try to reconnect to the card.
+     */
     void reconnect();
+
+    /**
+     * disables the file listener.
+     * 
+     * @param fileListener
+     *            the listener to diable.
+     * @return true if the listener was disabled.
+     */
+    boolean removeListener(IFileListener fileListener);
+
+    /**
+     * @return the human readable titel of the card.
+     */
+    String title();
 
 }

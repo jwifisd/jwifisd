@@ -21,8 +21,25 @@ package io.github.jwifisd.api;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
+/**
+ * API to create a higher level API over a card. For example a newer version of
+ * a card has a better way to do something special. All cards of jwifids will
+ * never go lower than 1 so you can extent the implementation by using lower
+ * numbers. You can provide implementations by using the java service loader
+ * pattern.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public interface ICardImplentation {
 
+    /**
+     * A card was detected and this implementation is asked if it can create a
+     * better (lower level number) API for the card based on the card specified.
+     * 
+     * @param card
+     *            the card to check for a better implementation
+     * @return the higher level card to use instead of the card specified asd a
+     *         parameter.
+     */
     ICard decreaseLevel(ICard card);
 }

@@ -26,11 +26,37 @@ import io.github.jwifisd.net.LocalNetwork;
 
 import java.io.IOException;
 
+/**
+ * The abstract card detector interface. implement this service loader interface
+ * if you need a new way of detecting the presens of a wifisd card.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public interface IDetector {
 
-    void scan(LocalNetwork network, INotifier notifier) throws IOException;
-
+    /**
+     * @return true if this detector is currently scanning for new cards. If the
+     *         detector interface does a continuous scan instead of periodically
+     *         ones, returning true here will stop the periotic calls to the
+     *         scan method.
+     */
     boolean isScanning();
 
+    /**
+     * Periodically called method to scann the specified local network for new
+     * cards.
+     * 
+     * @param network
+     *            the network to scan
+     * @param notifier
+     *            the notifier to report new cards.
+     * @throws IOException
+     *             if something unexpected happens durring the network access.
+     */
+    void scan(LocalNetwork network, INotifier notifier) throws IOException;
+
+    /**
+     * stop scanning, probally because nobody is listening anymore.
+     */
     void stop();
 }

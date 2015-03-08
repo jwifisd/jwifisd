@@ -21,8 +21,23 @@ package io.github.jwifisd.api;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
+/**
+ * Listener for new files becomming available on a wifisd cards. This event will
+ * be used if a new file was detected on a card.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public interface IFileListener {
 
+    /**
+     * get notified of a new wifi file detected on a connected card. Normally
+     * the file ist not yet filled with the data that will be loaded on demand.
+     * But that is card specific and depends on the avbailabe api's.
+     * 
+     * @param card
+     *            the card on with the fiel was deteted.
+     * @param wifiFile
+     *            the file itself
+     */
     void notifyNewFile(ICard card, IWifiFile wifiFile);
 }

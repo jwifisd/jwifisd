@@ -24,7 +24,18 @@ package io.github.jwifisd.impl;
 
 import io.github.jwifisd.api.ICard;
 
+/**
+ * Listener interface to get notified about newly detected cards.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public interface ICardListener {
 
+    /**
+     * a new card was detected.
+     * 
+     * @param card
+     *            the detected card.
+     */
     void newCard(ICard card);
 }

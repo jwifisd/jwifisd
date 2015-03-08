@@ -24,9 +24,11 @@ package io.github.jwifisd.api;
 
 public interface IWifiFile {
 
-    String name();
+    void clean();
 
     byte[] getData();
+
+    String name();
 
     long timeStamp();
 }
