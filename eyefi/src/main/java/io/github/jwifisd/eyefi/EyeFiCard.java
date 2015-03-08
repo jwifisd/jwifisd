@@ -86,4 +86,11 @@ public class EyeFiCard implements ICard {
     public boolean removeListener(IFileListener fileListener) {
         return fileListeners.remove(fileListener);
     }
+
+    public void reportNewFile(EyeFiPhoto eyeFiPhoto) {
+        for (IFileListener fileListener : fileListeners) {
+            fileListener.notifyNewFile(this, eyeFiPhoto);
+        }
+
+    }
 }

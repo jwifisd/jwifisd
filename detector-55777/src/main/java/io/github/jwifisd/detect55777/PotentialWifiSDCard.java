@@ -28,15 +28,11 @@ import io.github.jwifisd.api.IFileListener;
 import io.github.jwifisd.net.arp.ARPControl;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.StringReader;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 
 public class PotentialWifiSDCard implements ICard {
 

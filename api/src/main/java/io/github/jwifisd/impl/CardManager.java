@@ -44,7 +44,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CardManager implements ICardManager, Runnable, IDoWithNetwork {
+public class CardManager implements ICardManager, Runnable, IDoWithNetwork, IFileListener {
 
     private static final CardManager SINGLETON = new CardManager();
 
@@ -153,6 +153,7 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork {
         for (ICardListener cardListener : cardListeners.toArray(EMPTY_CARDS)) {
             cardListener.newCard(card);
         }
+        card.addListener(this);
         currentCards.put(card.mac(), card);
     }
 
@@ -206,5 +207,11 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork {
         for (IFileListener fileListener : fileListeners.toArray(EMPTY_FILES)) {
             fileListener.notifyNewFile(card, wifiFile);
         }
+    }
+
+    @Override
+    public void notifyNewFile(ICard card, IWifiFile wifiFile) {
+        reportNewFile(card, wifiFile);
+
     }
 }

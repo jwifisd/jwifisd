@@ -91,9 +91,10 @@ public class TestDNSMessage {
         Assert.assertEquals(messages[0], Hex.encodeHexString(out.toByteArray()));
 
     }
+
     @Test
     public void testStrangeMessage() throws Exception {
-        //TODO implement this message (should not throw an exception...
+        // TODO implement this message (should not throw an exception...
         String message = "000000000002000000000000055f69707073045f746370056c6f63616c00000c0001045f697070c012000c0001a800010000010001000000000000";
     }
 

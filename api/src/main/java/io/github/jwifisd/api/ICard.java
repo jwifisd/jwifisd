@@ -46,4 +46,5 @@ public interface ICard {
     int level();
 
     void reconnect();
+
 }

@@ -25,7 +25,6 @@ package io.github.jwifisd.api;
 import io.github.jwifisd.net.LocalNetwork;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface IDetector {
 

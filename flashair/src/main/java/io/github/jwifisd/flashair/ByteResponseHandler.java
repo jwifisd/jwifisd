@@ -22,14 +22,24 @@ package io.github.jwifisd.flashair;
  * #L%
  */
 
-import io.github.jwifisd.api.ICard;
-import io.github.jwifisd.api.ICardImplentation;
+import java.io.IOException;
 
-public class FlashAirWifiSDDetector implements ICardImplentation {
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.util.EntityUtils;
+
+final class ByteResponseHandler implements ResponseHandler<byte[]> {
 
     @Override
-    public ICard decreaseLevel(ICard card) {
-        return FlashAirWiFiSD.create(card);
+    public byte[] handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+        int status = response.getStatusLine().getStatusCode();
+        if (status >= 200 && status < 300) {
+            HttpEntity entity = response.getEntity();
+            return entity != null ? EntityUtils.toByteArray(entity) : null;
+        } else {
+            throw new ClientProtocolException("Unexpected response status: " + status);
+        }
     }
-
 }

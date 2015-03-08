@@ -23,14 +23,12 @@ package io.github.jwifisd.eyefi;
  */
 
 import io.github.jwifisd.api.INotifier;
-import io.github.jwifisd.impl.CardManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -125,7 +123,7 @@ public class EyeFiServer extends NanoHTTPD {
         String fileName = uploadRequest.filename.replace(".tar", "");
         ByteArrayOutputStream fout = new ByteArrayOutputStream();
         boolean extraced = extractTarFile(context.eyefiFile, fout);
-        ((CardManager) CardManager.getInstance()).reportNewFile(cards.get(uploadRequest.macaddress), new EyeFiPhoto(fileName, fout.toByteArray()));
+        cards.get(uploadRequest.macaddress).reportNewFile(new EyeFiPhoto(fileName, fout.toByteArray()));
         return new UploadPhotoResponse(extraced);
     }
 

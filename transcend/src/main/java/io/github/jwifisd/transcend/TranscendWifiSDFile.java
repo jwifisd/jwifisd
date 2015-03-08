@@ -26,22 +26,17 @@ import io.github.jwifisd.api.IWifiFile;
 
 public class TranscendWifiSDFile implements IWifiFile {
 
-    private final String name;
-
     private final TranscendWiFiSD card;
 
     private byte[] data;
+
+    private final String name;
 
     private long timestamp = -1L;
 
     public TranscendWifiSDFile(TranscendWiFiSD card, String name) {
         this.name = name;
         this.card = card;
-    }
-
-    @Override
-    public String name() {
-        return name;
     }
 
     @Override
@@ -59,17 +54,22 @@ public class TranscendWifiSDFile implements IWifiFile {
         return timestamp;
     }
 
+    @Override
+    public String name() {
+        return name;
+    }
+
+    @Override
+    public long timeStamp() {
+        return 0;
+    }
+
     protected void setData(byte[] data) {
         this.data = data;
     }
 
     protected void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    @Override
-    public long timeStamp() {
-        return 0;
     }
 
 }

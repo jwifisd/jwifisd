@@ -25,7 +25,6 @@ package io.github.jwifisd.transcend;
 import io.github.jwifisd.api.IBrowse;
 import io.github.jwifisd.api.ICard;
 import io.github.jwifisd.api.IFileListener;
-import io.github.jwifisd.impl.CardManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,94 +50,35 @@ import org.slf4j.LoggerFactory;
 
 public class TranscendWiFiSD implements ICard, Runnable {
 
+    public static final int CARD_LEVEL = 1;
+
     private static final Logger LOG = LoggerFactory.getLogger(TranscendWiFiSD.class);
 
-    public static final int CARD_LEVEL = 1;
+    private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
+
+    private CloseableHttpClient httpclient;
 
     private ICard potentialCard;
 
-    private Socket westec;
-
     private Thread thread;
 
-    private CloseableHttpClient httpclient;
+    private Socket westec;
 
     public TranscendWiFiSD(ICard potentialCard, Socket westec) {
         this.potentialCard = potentialCard;
         startListening(westec);
     }
 
-    protected void startListening(Socket westec) {
-        this.westec = westec;
-        this.thread = new Thread(this, getClass().getSimpleName() + westec.getPort());
-        this.thread.start();
-    }
-
     @Override
-    public String title() {
-        return potentialCard.title();
-    }
-
-    @Override
-    public InetAddress ipAddress() {
-        return potentialCard.ipAddress();
+    public boolean addListener(IFileListener fileListener) {
+        fileListeners.add(fileListener);
+        return true;
     }
 
     @Override
     public IBrowse browse() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public int level() {
-        return CARD_LEVEL;
-    }
-
-    @Override
-    public String mac() {
-        return potentialCard.mac();
-    }
-
-    @Override
-    public void run() {
-        try {
-            InputStream inputStream = westec.getInputStream();
-            int oneByte;
-
-            ByteArrayOutputStream lineBytes = new ByteArrayOutputStream();
-            while (thread == Thread.currentThread() && (oneByte = inputStream.read()) >= 0) {
-                if (oneByte != 0) {
-                    lineBytes.write(oneByte);
-                } else {
-                    // line komplete
-                    byte[] lineByteArray = lineBytes.toByteArray();
-                    int offset = 0;
-                    while (lineByteArray[offset] == '>' || lineByteArray[offset] == '<') {
-                        offset++;
-                    }
-                    String line = new String(lineByteArray, offset, lineByteArray.length - offset, "UTF-8");
-                    TranscendWifiSDFile wifiFile = new TranscendWifiSDFile(this, line);
-                    ((CardManager) CardManager.getInstance()).reportNewFile(this, wifiFile);
-                    lineBytes.reset();
-                }
-            }
-        } catch (Exception e) {
-            LOG.error("TranscendWiFiSD event channel broke!", e);
-        } finally {
-            thread = null;
-        }
-    }
-
-    @Override
-    public void reconnect() {
-        if (!westec.isConnected()) {
-            try {
-                startListening(new Socket(ipAddress(), 5577));
-            } catch (IOException e) {
-                LOG.error("TranscendWiFiSD event channel could not reconnect!", e);
-            }
-        }
     }
 
     public void downloadFile(final TranscendWifiSDFile wifiFile) {
@@ -183,16 +123,77 @@ public class TranscendWiFiSD implements ICard, Runnable {
         }
     }
 
-    private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
+    @Override
+    public InetAddress ipAddress() {
+        return potentialCard.ipAddress();
+    }
 
     @Override
-    public boolean addListener(IFileListener fileListener) {
-        fileListeners.add(fileListener);
-        return true;
+    public int level() {
+        return CARD_LEVEL;
+    }
+
+    @Override
+    public String mac() {
+        return potentialCard.mac();
+    }
+
+    @Override
+    public void reconnect() {
+        if (!westec.isConnected()) {
+            try {
+                startListening(new Socket(ipAddress(), 5577));
+            } catch (IOException e) {
+                LOG.error("TranscendWiFiSD event channel could not reconnect!", e);
+            }
+        }
     }
 
     @Override
     public boolean removeListener(IFileListener fileListener) {
         return fileListeners.remove(fileListener);
+    }
+
+    @Override
+    public void run() {
+        try {
+            InputStream inputStream = westec.getInputStream();
+            int oneByte;
+
+            ByteArrayOutputStream lineBytes = new ByteArrayOutputStream();
+            while (thread == Thread.currentThread() && (oneByte = inputStream.read()) >= 0) {
+                if (oneByte != 0) {
+                    lineBytes.write(oneByte);
+                } else {
+                    // line komplete
+                    byte[] lineByteArray = lineBytes.toByteArray();
+                    int offset = 0;
+                    while (lineByteArray[offset] == '>' || lineByteArray[offset] == '<') {
+                        offset++;
+                    }
+                    String line = new String(lineByteArray, offset, lineByteArray.length - offset, "UTF-8");
+                    TranscendWifiSDFile wifiFile = new TranscendWifiSDFile(this, line);
+                    for (IFileListener fileListener : fileListeners) {
+                        fileListener.notifyNewFile(this, wifiFile);
+                    }
+                    lineBytes.reset();
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("TranscendWiFiSD event channel broke!", e);
+        } finally {
+            thread = null;
+        }
+    }
+
+    @Override
+    public String title() {
+        return potentialCard.title();
+    }
+
+    protected void startListening(Socket westec) {
+        this.westec = westec;
+        this.thread = new Thread(this, getClass().getSimpleName() + westec.getPort());
+        this.thread.start();
     }
 }
