@@ -1,4 +1,4 @@
-package io.github.jwifisd.eyefi;
+package org.jwifisd.eyefi;
 
 /*
  * #%L

@@ -7,12 +7,12 @@
 		<version>7</version>
 	</parent>
 	<artifactId>jwifisd</artifactId>
-	<groupId>io.github.jwifisd</groupId>
+	<groupId>org.jwifisd</groupId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>jwifisd</name>
-	<description>A Java api to access different kind of wifi-sd cards with a single api.</description>
-	<url>http://jwifisd.github.io/jwifisd</url>
+	<description>A generic pure Java API to access different brands of wifi-sd cards with a single generic API.</description>
+	<url>http://www.jwifisd.org</url>
 	<organization>
 		<name>jwifisd</name>
 	</organization>
@@ -33,9 +33,9 @@
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<site>
-			<id>sourceforge-deploy</id>
-			<name>Sourceforge Maven 2 Project Site</name>
-			<url>file://${java.io.tmpdir}/stage</url>
+			<id>private-deploy</id>
+			<name>private Project Site</name>
+			<url>scp://j4all.org:33333/var/www/jwifisd</url>
 		</site>
 	</distributionManagement>
 	<inceptionYear>2015</inceptionYear>
