@@ -13,7 +13,6 @@
 	<dependencies>
 	</dependencies>
 	<properties>
-		<site.basedir>${project.parent.basedir}</site.basedir>
 		<jwifisd.nonjavamodule>false</jwifisd.nonjavamodule>
 	</properties>
 </project>

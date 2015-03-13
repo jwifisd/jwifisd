@@ -245,7 +245,7 @@
 						<goals>
 							<goal>site</goal>
 						</goals>
-						<phase>site-deploy</phase>
+						<phase>never-site-deploy</phase>
 					</execution>
 				</executions>
 			</plugin>
@@ -455,7 +455,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>use code formatter</id>
+			<id>sub module</id>
 			<activation>
 				<file>
 					<exists>../src/main/resources/eclipse/formatter.xml</exists>
@@ -476,6 +476,13 @@
 						</executions>
 						<configuration>
 							<configFile>../src/main/resources/eclipse/formatter.xml</configFile>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>com.github.github</groupId>
+						<artifactId>site-maven-plugin</artifactId>
+						<configuration>
+							<path>${artifactId}</path>
 						</configuration>
 					</plugin>
 				</plugins>
