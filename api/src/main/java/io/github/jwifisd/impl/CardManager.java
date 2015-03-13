@@ -51,18 +51,18 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Richard van Nieuwenhoven
  */
-public class CardManager implements ICardManager, Runnable, IDoWithNetwork, IFileListener {
+public final class CardManager implements ICardManager, Runnable, IDoWithNetwork, IFileListener {
 
     /**
      * service loader for finding the best card implementation to access a
      * card.
      */
-    private static final ServiceLoader<ICardImplentation> cardImplServiceLoader = ServiceLoader.load(ICardImplentation.class);
+    private static final ServiceLoader<ICardImplentation> CARD_IMPL_SERVICE_LOADER = ServiceLoader.load(ICardImplentation.class);
 
     /**
      * service loader for the detector implementations.
      */
-    private static final ServiceLoader<IDetector> detectorServiceLoader = ServiceLoader.load(IDetector.class);
+    private static final ServiceLoader<IDetector> DETECTOR_SERVICE_LOADER = ServiceLoader.load(IDetector.class);
 
     /**
      * empty listener array, for easy access to toArray().
@@ -205,7 +205,7 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork, IFil
                 LOG.error("scanning failed,trying again", e);
             }
         }
-        Iterator<IDetector> detectors = detectorServiceLoader.iterator();
+        Iterator<IDetector> detectors = DETECTOR_SERVICE_LOADER.iterator();
         while (detectors.hasNext()) {
             IDetector iDetector = (IDetector) detectors.next();
             try {
@@ -220,7 +220,7 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork, IFil
 
     @Override
     public void run(LocalNetwork localNetwork) {
-        Iterator<IDetector> detectors = detectorServiceLoader.iterator();
+        Iterator<IDetector> detectors = DETECTOR_SERVICE_LOADER.iterator();
         while (detectors.hasNext()) {
             IDetector iDetector = (IDetector) detectors.next();
             try {
@@ -276,7 +276,7 @@ public class CardManager implements ICardManager, Runnable, IDoWithNetwork, IFil
      * @return the better implementation or the card itself.
      */
     protected ICard findBetterImplementation(ICard card) {
-        Iterator<ICardImplentation> cardImpl = cardImplServiceLoader.iterator();
+        Iterator<ICardImplentation> cardImpl = CARD_IMPL_SERVICE_LOADER.iterator();
         while (cardImpl.hasNext()) {
             ICardImplentation cardImplentation = (ICardImplentation) cardImpl.next();
             ICard newCard = cardImplentation.decreaseLevel(card);

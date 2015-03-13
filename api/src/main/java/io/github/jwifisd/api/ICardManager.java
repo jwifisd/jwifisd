@@ -22,7 +22,6 @@ package io.github.jwifisd.api;
  * #L%
  */
 
-import io.github.jwifisd.impl.CardManager;
 import io.github.jwifisd.impl.ICardListener;
 
 import java.util.Properties;
@@ -30,7 +29,8 @@ import java.util.Properties;
 /**
  * This is the card manager api, that is the stating point for all access to
  * wifi cards, There will be only one active instance/implementation of theis
- * interface. Access it by calling {@link CardManager#getInstance()}
+ * interface. Access it by calling
+ * {@link io.github.jwifisd.impl.CardManagerCardManager#getInstance()}
  * 
  * @author Richard van Nieuwenhoven
  */

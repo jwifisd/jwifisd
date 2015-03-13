@@ -32,7 +32,7 @@ public interface INotifier {
     /**
      * empty notifier implementation to avoid null checks.
      */
-    public static INotifier DUMMY = new INotifier() {
+    INotifier DUMMY = new INotifier() {
 
         @Override
         public String getProperty(String string) {
@@ -52,7 +52,7 @@ public interface INotifier {
      *            the property key to get.
      * @return the string value of the property
      */
-    String getProperty(String string);
+    String getProperty(String key);
 
     /**
      * report the detection of a new card.
