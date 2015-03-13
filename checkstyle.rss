@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>jwifisd - Checkstyle report</title>
+    <link>http://www.jwifisd.org</link>
+    <description>jwifisd - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2015 jwifisd</copyright>
+    <item>
+      <title>File: 52,
+             Errors: 556,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>http://www.jwifisd.org/checkstyle.html</link>
+      <description>
+        <p>Click <a href="http://www.jwifisd.org/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.ICardImplentation.java">org/jwifisd/api/ICardImplentation.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.detect55777.PotentialWifiSDCard.java">org/jwifisd/detect55777/PotentialWifiSDCard.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.IDetector.java">org/jwifisd/api/IDetector.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.package-info.java">org/jwifisd/api/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.StartSessionResponse.java">org/jwifisd/eyefi/StartSessionResponse.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.IWifiFile.java">org/jwifisd/api/IWifiFile.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.mdns.DNSPayload.java">org/jwifisd/mdns/DNSPayload.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  60
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.ICard.java">org/jwifisd/api/ICard.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.net.LocalNetwork.java">org/jwifisd/net/LocalNetwork.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  15
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.UploadPhotoResponse.java">org/jwifisd/eyefi/UploadPhotoResponse.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.impl.CardManager.java">org/jwifisd/impl/CardManager.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.EyeFiDetector.java">org/jwifisd/eyefi/EyeFiDetector.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.IBrowse.java">org/jwifisd/api/IBrowse.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.mdns.QClass.java">org/jwifisd/mdns/QClass.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  19
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.FaultResponce.java">org/jwifisd/eyefi/FaultResponce.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.EyeFiServer.java">org/jwifisd/eyefi/EyeFiServer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  26
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.INotifier.java">org/jwifisd/api/INotifier.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.flashair.FlashAirWiFiSDFile.java">org/jwifisd/flashair/FlashAirWiFiSDFile.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  41
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.net.IDoWithNetwork.java">org/jwifisd/net/IDoWithNetwork.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.transcend.TranscendWifiSDFile.java">org/jwifisd/transcend/TranscendWifiSDFile.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.EyeFiCard.java">org/jwifisd/eyefi/EyeFiCard.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.UploadPhotoRequest.java">org/jwifisd/eyefi/UploadPhotoRequest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  15
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.ICardManager.java">org/jwifisd/api/ICardManager.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.flashair.StringResponseHandler.java">org/jwifisd/flashair/StringResponseHandler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.net.arp.ARP.java">org/jwifisd/net/arp/ARP.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  7
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.detect.mdns.DetectorMDNS.java">org/jwifisd/detect/mdns/DetectorMDNS.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  14
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.PhotoStatusRequest.java">org/jwifisd/eyefi/PhotoStatusRequest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  14
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.api.IFileListener.java">org/jwifisd/api/IFileListener.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.impl.package-info.java">org/jwifisd/impl/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.GetPhotoStatusResponse.java">org/jwifisd/eyefi/GetPhotoStatusResponse.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.impl.ICardListener.java">org/jwifisd/impl/ICardListener.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.detect55777.Detector55777.java">org/jwifisd/detect55777/Detector55777.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.net.arp.ARPControl.java">org/jwifisd/net/arp/ARPControl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  22
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.transcend.TranscendWifiSDDetector.java">org/jwifisd/transcend/TranscendWifiSDDetector.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.detect55777.package-info.java">org/jwifisd/detect55777/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.net.LocalNetworkScanner.java">org/jwifisd/net/LocalNetworkScanner.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.flashair.FlashAirWifiSDDetector.java">org/jwifisd/flashair/FlashAirWifiSDDetector.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.mdns.DNSMessage.java">org/jwifisd/mdns/DNSMessage.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  8
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.StartSessionRequest.java">org/jwifisd/eyefi/StartSessionRequest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  13
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.flashair.FlashAirWiFiSD.java">org/jwifisd/flashair/FlashAirWiFiSD.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  24
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.detect.mdns.PotentialWifiSDCard.java">org/jwifisd/detect/mdns/PotentialWifiSDCard.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  8
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.EyeFiPhoto.java">org/jwifisd/eyefi/EyeFiPhoto.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.flashair.ByteResponseHandler.java">org/jwifisd/flashair/ByteResponseHandler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.transcend.TranscendWiFiSD.java">org/jwifisd/transcend/TranscendWiFiSD.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  17
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.MarkLastPhotoInRollRequest.java">org/jwifisd/eyefi/MarkLastPhotoInRollRequest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.EyefiResponse.java">org/jwifisd/eyefi/EyefiResponse.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.mdns.InternetClassType.java">org/jwifisd/mdns/InternetClassType.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  72
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.net.arp.ARPFilter.java">org/jwifisd/net/arp/ARPFilter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.mdns.DNSObject.java">org/jwifisd/mdns/DNSObject.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  31
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.mdns.DNSHeader.java">org/jwifisd/mdns/DNSHeader.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  78
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.EyefiRequest.java">org/jwifisd/eyefi/EyefiRequest.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://www.jwifisd.org/checkstyle.html#org.jwifisd.eyefi.MarkLastPhotoInRollResponse.java">org/jwifisd/eyefi/MarkLastPhotoInRollResponse.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+
