@@ -22,17 +22,39 @@ package org.jwifisd.all;
  * #L%
  */
 
-import java.io.IOException;
-
 import org.jwifisd.api.ICard;
 import org.jwifisd.api.IFileListener;
 import org.jwifisd.api.IWifiFile;
 import org.jwifisd.impl.CardManager;
 import org.jwifisd.impl.ICardListener;
 
-public class ScannAll {
+/**
+ * Just a test scanner to show how events are handled.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
+public final class ScannAll {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+    /**
+     * Sleep interval.
+     */
+    private static final int SLEEP_INTERFALL = 500;
+
+    /**
+     * helper class should not be instantiated.
+     */
+    private ScannAll() {
+    }
+
+    /**
+     * standard main start program.
+     * 
+     * @param args
+     *            ignored
+     * @throws Exception
+     *             if something goes wrong
+     */
+    public static void main(String[] args) throws Exception {
         CardManager.getInstance().addListener(new ICardListener() {
 
             @Override
@@ -50,7 +72,7 @@ public class ScannAll {
             }
         });
         while (true) {
-            Thread.sleep(500);
+            Thread.sleep(SLEEP_INTERFALL);
         }
     }
 

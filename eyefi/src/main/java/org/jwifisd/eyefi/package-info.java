@@ -1,10 +1,17 @@
+/**
+ * This package handles the eyefi system that works the other way around as
+ * other cards, here the eyefi card will send soap messages as soon as it
+ * detects a host and it has new files to report. Important is that depending of
+ * the type of eyefi card you should provide an upload key. Mobi cards do not
+ * need that because they use the default upload key (all zeros).
+ */
 package org.jwifisd.eyefi;
 
 /*
  * #%L
- * jwifisd-eyefi
+ * jwifisd-detector-55777
  * %%
- * Copyright (C) 2012 - 2015 jwifisd
+ * Copyright (C) 2015 jwifisd
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -22,23 +29,3 @@ package org.jwifisd.eyefi;
  * #L%
  */
 
-/**
- * response to the last photo in roll request.
- * 
- * @author Richard van Nieuwenhoven
- */
-public class MarkLastPhotoInRollResponse extends EyefiResponse {
-
-    /**
-     * create a MarkLastPhotoInRollResponse response.
-     */
-    public MarkLastPhotoInRollResponse() {
-        super("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + //
-                "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" + //
-                "  <SOAP-ENV:Body>" + //
-                "    <ns1:MarkLastPhotoInRollResponse xmlns:ns1=\"http://localhost/api/soap/eyefilm\" />" + //
-                "  </SOAP-ENV:Body>" + //
-                "</SOAP-ENV:Envelope>");
-    }
-
-}

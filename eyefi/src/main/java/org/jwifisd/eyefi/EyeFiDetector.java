@@ -27,15 +27,35 @@ import org.jwifisd.net.LocalNetwork;
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
+/**
+ * This detector will detect eyefi cards pressent in the subnet. No not realy,
+ * it starts a http server on the eyefi port and waits for the card to send a
+ * soap message to it. So in this case we wait for the card to report itself.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class EyeFiDetector implements IDetector {
 
-    private static class RealEyeFiDetector implements IDetector {
+    /**
+     * Because there can only be one server in the jvm this must be a singlton.
+     * 
+     * @author Richard van Nieuwenhoven
+     */
+    private static final class RealEyeFiDetector implements IDetector {
 
-        boolean isScanning = false;
+        /**
+         * is scanning in progress (server started).
+         */
+        private boolean isScanning = false;
 
+        /**
+         * the eyefi http server.
+         */
         private EyeFiServer eyeFiServer;
 
+        /**
+         * private constructor so nobody else can start the server.
+         */
         private RealEyeFiDetector() {
         }
 
@@ -58,7 +78,10 @@ public class EyeFiDetector implements IDetector {
         }
     }
 
-    private static RealEyeFiDetector SINGLETON = new RealEyeFiDetector();
+    /**
+     * the singleton detector that controls the server.
+     */
+    private static final RealEyeFiDetector SINGLETON = new RealEyeFiDetector();
 
     @Override
     public void scan(LocalNetwork network, INotifier notifier) throws IOException {

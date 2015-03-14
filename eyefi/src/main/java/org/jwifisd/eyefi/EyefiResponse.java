@@ -13,11 +13,11 @@ package org.jwifisd.eyefi;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -28,8 +28,22 @@ import java.util.Locale;
 
 import fi.iki.elonen.NanoHTTPD.Response;
 
+/**
+ * This is the abstract eyefi response writer. the eyefi card will send soap
+ * messages to the server, every expected message type must be answered with the
+ * Appropriate http response. Every Response is represented by a subclass.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class EyefiResponse extends Response {
 
+    /**
+     * create a eyefi http response, this superclass does all the common stuff
+     * that all responses need. Like saying that it is a soap response.
+     * 
+     * @param responseText
+     *            the soap body to send.
+     */
     public EyefiResponse(String responseText) {
         super(Status.OK, "text/xml", responseText);
         addHeader("Server", "Eye-Fi Agent/2.0.4.0");

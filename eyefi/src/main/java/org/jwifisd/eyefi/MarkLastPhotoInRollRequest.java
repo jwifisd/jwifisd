@@ -13,11 +13,11 @@ package org.jwifisd.eyefi;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -25,12 +25,31 @@ package org.jwifisd.eyefi;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 
+/**
+ * soap request that marks the last photo in roll. (never received it yet)
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class MarkLastPhotoInRollRequest extends EyefiRequest {
 
-    String macaddress;
+    /**
+     * the mac address of the card.
+     */
+    private String macaddress;
 
-    String mergedelta;
+    /**
+     * the merge delta attribute of the request.
+     */
+    private String mergedelta;
 
+    /**
+     * create a MarkLastPhotoInRollRequest based on a soap request.
+     * 
+     * @param postData
+     *            the soap body
+     * @throws XMLStreamException
+     *             if the body could not be parsed.
+     */
     public MarkLastPhotoInRollRequest(String postData) throws XMLStreamException {
         super(postData);
     }

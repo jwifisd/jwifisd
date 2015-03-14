@@ -13,11 +13,11 @@ package org.jwifisd.eyefi;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -25,22 +25,110 @@ package org.jwifisd.eyefi;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 
+/**
+ * parse the upload photo request of an eyefi card.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class UploadPhotoRequest extends EyefiRequest {
 
-    String macaddress;
+    /**
+     * encryption attribute of the request.
+     */
+    private String encryption;
 
-    String filename;
+    /**
+     * file name of the photo.
+     */
+    private String filename;
 
-    String filesize;
+    /**
+     * file signature of the photo.
+     */
 
-    String filesignature;
+    private String filesignature;
 
-    String encryption;
+    /**
+     * file size of the photo.
+     */
+    private String filesize;
 
-    String flags;
+    /**
+     * flags of the photo file.
+     */
+    private String flags;
 
+    /**
+     * mac address of the eyefi card.
+     */
+    private String macaddress;
+
+    /**
+     * parse the soap upload photo request message.
+     * 
+     * @param postData
+     *            the soap body
+     * @throws XMLStreamException
+     *             if the body could not be parsed.
+     */
     public UploadPhotoRequest(String postData) throws XMLStreamException {
         super(postData);
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer result = new StringBuffer(getClass().getSimpleName());
+        result.append("(");
+        result.append("\n\tmacaddress:").append(macaddress);
+        result.append("\n\tfilename:").append(filename);
+        result.append("\n\tfilesize:").append(filesize);
+        result.append("\n\tfilesignature:").append(filesignature);
+        result.append("\n\tencryption:").append(encryption);
+        result.append("\n\tflags:").append(flags);
+        result.append(")");
+        return result.toString();
+    }
+
+    /**
+     * @return encryption attribute of the request.
+     */
+    protected String getEncryption() {
+        return encryption;
+    }
+
+    /**
+     * @return file name of the photo.
+     */
+    protected String getFilename() {
+        return filename;
+    }
+
+    /**
+     * @return file signature of the photo.
+     */
+    protected String getFilesignature() {
+        return filesignature;
+    }
+
+    /**
+     * @return file size of the photo.
+     */
+    protected String getFilesize() {
+        return filesize;
+    }
+
+    /**
+     * @return flags of the photo file.
+     */
+    protected String getFlags() {
+        return flags;
+    }
+
+    /**
+     * @return mac address of the eyefi card.
+     */
+    protected String getMacaddress() {
+        return macaddress;
     }
 
     @Override
@@ -63,21 +151,8 @@ public class UploadPhotoRequest extends EyefiRequest {
         } else if (localPart.equals("flags")) {
             flags = stringValue(eventReader);
             return true;
-        } else
+        } else {
             return false;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer result = new StringBuffer(getClass().getSimpleName());
-        result.append("(");
-        result.append("\n\tmacaddress:").append(macaddress);
-        result.append("\n\tfilename:").append(filename);
-        result.append("\n\tfilesize:").append(filesize);
-        result.append("\n\tfilesignature:").append(filesignature);
-        result.append("\n\tencryption:").append(encryption);
-        result.append("\n\tflags:").append(flags);
-        result.append(")");
-        return result.toString();
+        }
     }
 }

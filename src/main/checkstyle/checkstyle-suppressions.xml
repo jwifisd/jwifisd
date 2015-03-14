@@ -5,15 +5,17 @@
      "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
 
 <suppressions>
-	<suppress checks="." files="org[\\/]gnu[\\/]savannah[\\/]gsl[\\/]" />
-	<suppress checks="."
-		files="org[\\/]gnu[\\/]savannah[\\/]gsl[\\/]util[\\/]" />
-	<suppress checks="."
-		files="org[\\/]indilib[\\/]i4j[\\/]driver[\\/]guider[\\/]" />
+
+	<suppress files=".jpg" checks="NewlineAtEndOfFile|FileTabCharacter|FileLength" />
+	<suppress files=".png" checks="NewlineAtEndOfFile|FileTabCharacter|FileLength" />
+	<suppress files=".fxml" checks="FileTabCharacter" />
+	<suppress files=".css" checks="FileTabCharacter" />
+	<suppress files="META[\\-]INF[\\/]services[\\/]" checks="NewlineAtEndOfFile|FileTabCharacter" />
 
 	<!-- JUnit Rules require the rules field to have public visibility. -->
 	<!-- See http://checkstyle.sourceforge.net/config_design.html#VisibilityModifier -->
 	<suppress files=".*Test\.java" checks="VisibilityModifier" />
+	<suppress files="Test.*\.java" checks="VisibilityModifier" />
 
 	<!-- For our tests we do not demand API documentation. -->
 	<!-- See http://checkstyle.sf.net/config_javadoc.html -->

@@ -24,12 +24,33 @@ package org.jwifisd.eyefi;
 
 import org.jwifisd.api.IWifiFile;
 
+/**
+ * Eyefi file that was reported to the server, important to know that eyefi just
+ * reports photos so no other files will come this way.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class EyeFiPhoto implements IWifiFile {
 
+    /**
+     * The name of the file.
+     */
     private final String name;
 
+    /**
+     * the file contents (this is memory because the eyefi cards send the file
+     * once only).
+     */
     private final byte[] data;
 
+    /**
+     * construct a eyefi card for the name and the file contents.
+     * 
+     * @param name
+     *            the anme of the file
+     * @param data
+     *            the contents of the file.
+     */
     public EyeFiPhoto(String name, byte[] data) {
         this.name = name;
         this.data = data;

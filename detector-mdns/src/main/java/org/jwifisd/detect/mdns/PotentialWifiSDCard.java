@@ -28,31 +28,54 @@ import org.jwifisd.api.IBrowse;
 import org.jwifisd.api.ICard;
 import org.jwifisd.api.IFileListener;
 import org.jwifisd.net.arp.ARPControl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * A potential WiFiSD acrd that was detected using mdns messages.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class PotentialWifiSDCard implements ICard {
 
+    /**
+     * logger to log to.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(PotentialWifiSDCard.class);
+
+    /**
+     * the full qualified name of the device. (normally "xxx.local")
+     */
     private final String fullQualifiedName;
 
+    /**
+     * the ip address of the device. (this could change with every detection of
+     * the same card)
+     */
     private final InetAddress ip;
 
+    /**
+     * the mac (hardware) address of the device. (this will always stay the same
+     * for a spesific device)
+     */
     private String mac;
 
-    public PotentialWifiSDCard(String fullQualifiedName, InetAddress ip) {
+    /**
+     * create a new mdns detected potential card.
+     * 
+     * @param fullQualifiedName
+     *            the full qualified name.
+     * @param ip
+     *            the ip address of the card.
+     */
+    protected PotentialWifiSDCard(String fullQualifiedName, InetAddress ip) {
         this.fullQualifiedName = fullQualifiedName;
         this.ip = ip;
     }
 
-    public String getFullQualifiedName() {
-        return fullQualifiedName;
-    }
-
-    public InetAddress getIp() {
-        return ip;
-    }
-
     @Override
     public String title() {
-        return getFullQualifiedName();
+        return fullQualifiedName;
     }
 
     @Override
@@ -67,7 +90,7 @@ public class PotentialWifiSDCard implements ICard {
 
     @Override
     public int level() {
-        return 100;
+        return ICard.BARE_PRIMITIV_CARD_LAVEL;
     }
 
     @Override
@@ -76,7 +99,7 @@ public class PotentialWifiSDCard implements ICard {
             try {
                 mac = ARPControl.macAdressOf(this.ip);
             } catch (Exception e) {
-                // TODO: log this event
+                LOG.error("could not detect mac address of card with ip " + ip, e);
                 mac = "00:00:00:00:00:00";
             }
         }

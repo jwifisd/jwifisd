@@ -13,11 +13,11 @@ package org.jwifisd.eyefi;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -25,22 +25,51 @@ package org.jwifisd.eyefi;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamException;
 
+/**
+ * soap request of a eyefi card that requests the photo status.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class PhotoStatusRequest extends EyefiRequest {
 
-    String macaddress;
+    /**
+     * the mac adress of the card.
+     */
+    private String macaddress;
 
-    String credential;
+    /**
+     * the credentials to use.
+     */
+    private String credential;
 
-    String filename;
+    /**
+     * the name of the file.
+     */
+    private String filename;
 
-    String filesize;
+    /**
+     * the size of the file.
+     */
+    private String filesize;
 
-    String filesignature;
+    /**
+     * the signature of the file.
+     */
+    private String filesignature;
 
-    public PhotoStatusRequest(String postData) throws Exception {
+    /**
+     * parse the photo status soap request message.
+     * 
+     * @param postData
+     *            the soap body
+     * @throws XMLStreamException
+     *             if the body could not be parsed.
+     */
+    public PhotoStatusRequest(String postData) throws XMLStreamException {
         super(postData);
     }
 
+    @Override
     protected boolean handleElement(String localPart, XMLEventReader eventReader) throws XMLStreamException {
         if (localPart.equals("macaddress")) {
             macaddress = stringValue(eventReader);

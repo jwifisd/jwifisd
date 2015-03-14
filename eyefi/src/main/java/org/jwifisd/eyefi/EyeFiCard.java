@@ -32,25 +32,46 @@ import org.jwifisd.api.IBrowse;
 import org.jwifisd.api.ICard;
 import org.jwifisd.api.IFileListener;
 
+/**
+ * The exefi card detected by soap messages.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class EyeFiCard implements ICard {
 
-    private StartSessionRequest startSession;
+    /**
+     * all listeners that wanht to know when a new file was send to the eyefi
+     * server.
+     */
+    private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
 
+    /**
+     * the ip address of the card.
+     */
     private InetAddress ipAddress;
 
+    /**
+     * the session request that triggerd the craetion of the card.
+     */
+    private StartSessionRequest startSession;
+
+    /**
+     * constructor of an eyefi card that was triggered by a soap request.
+     * 
+     * @param startSession
+     *            the http session that connects the server to the card.
+     * @throws UnknownHostException
+     *             should never happen because the card was just connected.
+     */
     public EyeFiCard(StartSessionRequest startSession) throws UnknownHostException {
         this.startSession = startSession;
-        ipAddress = InetAddress.getByName(startSession.ipAddress);
+        ipAddress = InetAddress.getByName(startSession.getIpAddress());
     }
 
     @Override
-    public String title() {
-        return "EyeFi-" + startSession.macaddress;
-    }
-
-    @Override
-    public InetAddress ipAddress() {
-        return ipAddress;
+    public boolean addListener(IFileListener fileListener) {
+        fileListeners.add(fileListener);
+        return true;
     }
 
     @Override
@@ -60,13 +81,18 @@ public class EyeFiCard implements ICard {
     }
 
     @Override
+    public InetAddress ipAddress() {
+        return ipAddress;
+    }
+
+    @Override
     public int level() {
         return 1;
     }
 
     @Override
     public String mac() {
-        return startSession.macaddress;
+        return startSession.getMacaddress();
     }
 
     @Override
@@ -74,23 +100,26 @@ public class EyeFiCard implements ICard {
 
     }
 
-    private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
-
-    @Override
-    public boolean addListener(IFileListener fileListener) {
-        fileListeners.add(fileListener);
-        return true;
-    }
-
     @Override
     public boolean removeListener(IFileListener fileListener) {
         return fileListeners.remove(fileListener);
     }
 
-    public void reportNewFile(EyeFiPhoto eyeFiPhoto) {
+    /**
+     * report a new received file to the listeners.
+     * 
+     * @param eyeFiPhoto
+     *            the photo received.
+     */
+    protected void reportNewFile(EyeFiPhoto eyeFiPhoto) {
         for (IFileListener fileListener : fileListeners) {
             fileListener.notifyNewFile(this, eyeFiPhoto);
         }
 
+    }
+
+    @Override
+    public String title() {
+        return "EyeFi-" + startSession.getMacaddress();
     }
 }

@@ -13,17 +13,33 @@ package org.jwifisd.eyefi;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
-
+/**
+ * soap response for the start session request.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class StartSessionResponse extends EyefiResponse {
 
+    /**
+     * create a soap response for a start session request of an eyefi card.
+     * 
+     * @param credentialStr
+     *            the credential string
+     * @param cnonce
+     *            the cnonce
+     * @param transfermode
+     *            the transfer mode
+     * @param transfermodetimestamp
+     *            the transfer mode timestamp
+     */
     public StartSessionResponse(String credentialStr, String cnonce, String transfermode, String transfermodetimestamp) {
         super("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + //
                 "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" + //
