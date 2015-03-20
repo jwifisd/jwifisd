@@ -13,11 +13,11 @@ package org.jwifisd.flashair;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -41,49 +41,105 @@ import org.jwifisd.api.IFileListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class FlashAirWiFiSD implements ICard, Runnable {
+/**
+ * This card implementation handles the flashair protocol.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
+public final class FlashAirWiFiSD implements ICard, Runnable {
 
+    /**
+     * default poll interfall for new files (in milliseconds).
+     */
+    private static final int DEFAULT_POLL_INTERERFALL = 333;
+
+    /**
+     * this card can handle the api very good so level 1 is used.
+     */
     public static final int CARD_LEVEL = 1;
 
+    /**
+     * api operation to get the file listing.
+     */
     private static final String GET_FILE_LIST = "100";
 
-    private static final String GET_MAC_ADDRESS = "106";
-
+    /**
+     * this operation is used to get the ssid of the card, it is also used to
+     * check if the card is realy a flashair card.
+     */
     private static final String GET_SSID = "104";
 
+    /**
+     * operation used to check is any write operation has occured on the card.
+     * We use this operation to check periotically for changes.
+     */
     private static final String GET_UPDATE_STATUS = "102";
 
+    /**
+     * the logger to log to.
+     */
     private static final Logger LOG = LoggerFactory.getLogger(FlashAirWiFiSD.class);
 
+    /**
+     * list with listeners that want to know new detected files.
+     */
     private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
 
+    /**
+     * the http client connection to the http server of the card.
+     */
     private CloseableHttpClient httpclient;
 
+    /**
+     * a list of files that we already know of, we need this to detect the newly
+     * created files.
+     */
     private Set<FlashAirWiFiSDFile> knownFiles = new HashSet<>();
 
-    private String mac;
-
+    /**
+     * the lower level card this card wrappes.
+     */
     private ICard potentialCard;
 
+    /**
+     * the network ssid.
+     */
     private String ssid;
 
+    /**
+     * the running thread that periotically checks for new files.
+     */
     private Thread thread;
 
-    public FlashAirWiFiSD(ICard potentialCard) {
+    /**
+     * constructor for this card (needs a low level card).
+     * 
+     * @param potentialCard
+     *            the wrapped low level card.
+     */
+    private FlashAirWiFiSD(ICard potentialCard) {
         this.potentialCard = potentialCard;
         this.ssid = executeOperation(GET_SSID, false);
         if (this.ssid != null) {
-            Set<FlashAirWiFiSDFile> newFiles = collectCurrentFiles("/DCIM", null);
+            collectCurrentFiles("/DCIM", null);
             executeOperation(GET_UPDATE_STATUS, true);
             thread = new Thread(this, getClass().getSimpleName());
             thread.start();
         }
     }
 
-    public static ICard create(ICard potentialCard) {
+    /**
+     * package internal api to create a flashair card.
+     * 
+     * @param potentialCard
+     *            the lower level card to test.
+     * @return the flashair implementation or null if the potentialCard was not
+     *         recognized as flashair.
+     */
+    protected static ICard create(ICard potentialCard) {
         if (potentialCard.level() > CARD_LEVEL) {
             FlashAirWiFiSD flashAirWiFiSD = new FlashAirWiFiSD(potentialCard);
-            if (flashAirWiFiSD.mac() != null) {
+            if (flashAirWiFiSD.ssid != null) {
                 return flashAirWiFiSD;
             }
         }
@@ -102,7 +158,15 @@ public class FlashAirWiFiSD implements ICard, Runnable {
         return null;
     }
 
-    public byte[] getData(FlashAirWiFiSDFile flashAirWiFiSDFile) {
+    /**
+     * get the file contents of the specified file. No cache here so every call
+     * will get the date from the card.
+     * 
+     * @param flashAirWiFiSDFile
+     *            the file to get the contents of.
+     * @return the byte contents of the file
+     */
+    protected byte[] getData(FlashAirWiFiSDFile flashAirWiFiSDFile) {
 
         try {
             URI uri = new URIBuilder()//
@@ -122,6 +186,9 @@ public class FlashAirWiFiSD implements ICard, Runnable {
         }
     }
 
+    /**
+     * @return lazy created http client to connect to the card.
+     */
     public CloseableHttpClient getHttpClient() {
         if (httpclient == null) {
             httpclient = HttpClients.createDefault();
@@ -159,8 +226,9 @@ public class FlashAirWiFiSD implements ICard, Runnable {
         try {
             while (thread == Thread.currentThread()) {
                 try {
-                    Thread.sleep(333);
+                    Thread.sleep(pollInterfall());
                 } catch (InterruptedException e) {
+                    LOG.info("poll interruppted", e);
                 }
                 String status = executeOperation(GET_UPDATE_STATUS, true);
                 if (!status.equals("0")) {
@@ -175,8 +243,16 @@ public class FlashAirWiFiSD implements ICard, Runnable {
                 }
             }
         } finally {
-
+            thread = null;
         }
+    }
+
+    /**
+     * @return the poll interfall in milliseconds. this should be configurable
+     *         over the card properties.
+     */
+    public int pollInterfall() {
+        return DEFAULT_POLL_INTERERFALL;
     }
 
     @Override
@@ -184,6 +260,16 @@ public class FlashAirWiFiSD implements ICard, Runnable {
         return ssid;
     }
 
+    /**
+     * collect a list of currently available files on the card to be able to
+     * check the difference if a change happens.
+     * 
+     * @param directory
+     *            the directory to scan
+     * @param newFiles
+     *            the list of already collected files
+     * @return the list of collected files.
+     */
     private Set<FlashAirWiFiSDFile> collectCurrentFiles(String directory, Set<FlashAirWiFiSDFile> newFiles) {
         String fileList = executeOperation(GET_FILE_LIST, true, "DIR", directory);
         BufferedReader reader = new BufferedReader(new StringReader(fileList));
@@ -205,11 +291,22 @@ public class FlashAirWiFiSD implements ICard, Runnable {
                 }
             }
         } catch (IOException e) {
-            // can not happen..
+            LOG.info("very strange, this should not happen", e);
         }
         return newFiles;
     }
 
+    /**
+     * execute an api operation on the card and return the string result.
+     * 
+     * @param operation
+     *            the operation to execute.
+     * @param reportError
+     *            true if an error should be reported
+     * @param parameter
+     *            parameter for the operation
+     * @return the result of the operation or null if it failed.
+     */
     private String executeOperation(String operation, boolean reportError, String... parameter) {
         try {
             URIBuilder operationURI = new URIBuilder()//

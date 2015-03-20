@@ -13,11 +13,11 @@ package org.jwifisd.mdns;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -30,6 +30,13 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * thsi class contains the payload of the dns message. the header info is needed
+ * to deserialize it.
+ * 
+ * @author Richard van Nieuwenhoven
+ *
+ */
 public class DNSPayload extends DNSObject {
 
     protected final DNSHeader dnsHeader;
@@ -112,13 +119,13 @@ public class DNSPayload extends DNSObject {
         @Override
         public void read(InputStream in) throws IOException {
             String[] email = readStringArray(in);
-            this.userName = email[0];
-            this.domainName = toDomainName(Arrays.copyOfRange(email, 1, email.length - 1));
+            userName = email[0];
+            domainName = toDomainName(Arrays.copyOfRange(email, 1, email.length - 1));
         }
 
         @Override
         public void write(OutputStream out) throws IOException {
-            String[] domain = fromDomainName(this.domainName);
+            String[] domain = fromDomainName(domainName);
             String[] all = new String[domain.length + 1];
             all[0] = userName;
             System.arraycopy(domain, 0, all, 1, domain.length);
@@ -329,7 +336,7 @@ public class DNSPayload extends DNSObject {
     }
 
     public String getFullQualifiedDomainName() {
-        if (dnsHeader.isResponse) {
+        if (dnsHeader.isResponse()) {
             answers.get(0).payload.toString();
         } else {
             questions.get(0).getFullQualifiedDomainName();

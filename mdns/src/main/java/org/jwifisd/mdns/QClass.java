@@ -35,20 +35,8 @@ public enum QClass {
 
     private final int value;
 
-    private final String description;
-
-    private final boolean obsolete;
-
-    private final boolean reserved;
-
-    private final boolean isOnlyQClass;
-
     private QClass(int value, String description, boolean obsolete, boolean reserved, boolean isOnlyQClass) {
         this.value = value;
-        this.description = description;
-        this.obsolete = obsolete;
-        this.reserved = reserved;
-        this.isOnlyQClass = isOnlyQClass;
     }
 
     public static QClass qclass(int value) {

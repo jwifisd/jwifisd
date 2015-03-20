@@ -13,11 +13,11 @@ package org.jwifisd.flashair;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -30,12 +30,17 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
 
+/**
+ * a response handler for apache http client that receives a String.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 final class StringResponseHandler implements ResponseHandler<String> {
 
     @Override
-    public String handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+    public String handleResponse(HttpResponse response) throws IOException {
         int status = response.getStatusLine().getStatusCode();
-        if (status >= 200 && status < 300) {
+        if (status >= ByteResponseHandler.START_HTTP_OK_RESPONSE_RAGE && status < ByteResponseHandler.END_HTTP_OK_RESPONSE_RAGE) {
             HttpEntity entity = response.getEntity();
             return entity != null ? EntityUtils.toString(entity) : null;
         } else {

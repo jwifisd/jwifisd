@@ -100,11 +100,8 @@ public enum InternetClassType {
         return value;
     }
 
-    private final String description;
-
     private InternetClassType(int value, String description) {
         this.value = value;
-        this.description = description;
     }
 
     public static InternetClassType internetClassType(int value) {

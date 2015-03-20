@@ -40,12 +40,12 @@ final class ByteResponseHandler implements ResponseHandler<byte[]> {
     /**
      * the first http responce code from the range that respresends a ok.
      */
-    private static final int START_HTTP_OK_RESPONSE_RAGE = 200;
+    protected static final int START_HTTP_OK_RESPONSE_RAGE = 200;
 
     /**
      * the last http responce code from the range that respresends a ok.
      */
-    private static final int END_HTTP_OK_RESPONSE_RAGE = 300;
+    protected static final int END_HTTP_OK_RESPONSE_RAGE = 300;
 
     @Override
     public byte[] handleResponse(HttpResponse response) throws IOException {

@@ -1,8 +1,12 @@
+/**
+ * This package handles the flashair system that works that has a well defined
+ * api but no real eventing system.
+ */
 package org.jwifisd.flashair;
 
 /*
  * #%L
- * jwifisd-flashair
+ * jwifisd-detector-55777
  * %%
  * Copyright (C) 2015 jwifisd
  * %%
@@ -22,20 +26,3 @@ package org.jwifisd.flashair;
  * #L%
  */
 
-import org.jwifisd.api.ICard;
-import org.jwifisd.api.ICardImplentation;
-
-/**
- * Detector that checks is a low level card uses the flashair api, so the
- * flashair card implementation can be used.
- * 
- * @author Richard van Nieuwenhoven
- */
-public class FlashAirWifiSDDetector implements ICardImplentation {
-
-    @Override
-    public ICard decreaseLevel(ICard card) {
-        return FlashAirWiFiSD.create(card);
-    }
-
-}

@@ -13,11 +13,11 @@ package org.jwifisd.mdns;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
@@ -26,16 +26,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * this class represents a complete dns message.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class DNSMessage extends DNSObject {
 
-    final DNSHeader dnsHeader = new DNSHeader();
+    /**
+     * the dns header of the message.
+     */
+    private final DNSHeader dnsHeader = new DNSHeader();
 
-    final DNSPayload payload = new DNSPayload(dnsHeader);
+    /**
+     * the payload data of the message.
+     */
+    private final DNSPayload payload = new DNSPayload(dnsHeader);
 
+    /**
+     * @return the payload data of the message.
+     */
     public DNSPayload getPayload() {
         return payload;
     }
 
+    /**
+     * @return the haeder data of the message.
+     */
     public DNSHeader getDnsHeader() {
         return dnsHeader;
     }
@@ -53,6 +70,9 @@ public class DNSMessage extends DNSObject {
         payload.write(out);
     }
 
+    /**
+     * @return the full qualified domain name from the body.
+     */
     public String getFullQualifiedDomainName() {
         return payload.getFullQualifiedDomainName();
     }
