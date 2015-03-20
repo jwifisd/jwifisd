@@ -21,7 +21,7 @@
 			<topBarEnabled>false</topBarEnabled>
 			<sideBarEnabled>true</sideBarEnabled>
 			<gitHub>
-				<projectId>nom-tam-fits/nom-tam-fits</projectId>
+				<projectId>jwifisd/jwifisd</projectId>
 				<ribbonOrientation>right</ribbonOrientation>
 				<ribbonColor>black</ribbonColor>
 			</gitHub>
