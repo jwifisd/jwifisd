@@ -29,7 +29,6 @@ import java.net.UnknownHostException;
  * this class describes a locally available subnet .
  * 
  * @author Richard van Nieuwenhoven
- *
  */
 public class LocalNetwork {
 
@@ -112,7 +111,6 @@ public class LocalNetwork {
     }
 
     /**
-     * 
      * @return the subnet mask of the subnet.
      */
     public InetAddress getNetmask() {
@@ -121,8 +119,7 @@ public class LocalNetwork {
 
     /**
      * @return the network prefix length. e.g. how many bits og the address are
-     *         fix, the
-     *         rest represents the subnet.
+     *         fix, the rest represents the subnet.
      */
     public int getNetworkPrefixLength() {
         return networkPrefixLength;

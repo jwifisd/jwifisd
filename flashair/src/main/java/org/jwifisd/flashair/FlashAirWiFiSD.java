@@ -25,19 +25,16 @@ package org.jwifisd.flashair;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
-import java.net.InetAddress;
 import java.net.URI;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.jwifisd.api.IBrowse;
 import org.jwifisd.api.ICard;
-import org.jwifisd.api.IFileListener;
+import org.jwifisd.httpclient.ByteResponseHandler;
+import org.jwifisd.httpclient.HttpBasedCard;
+import org.jwifisd.httpclient.StringResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Richard van Nieuwenhoven
  */
-public final class FlashAirWiFiSD implements ICard, Runnable {
+public final class FlashAirWiFiSD extends HttpBasedCard implements Runnable {
 
     /**
      * default poll interfall for new files (in milliseconds).
@@ -81,25 +78,10 @@ public final class FlashAirWiFiSD implements ICard, Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(FlashAirWiFiSD.class);
 
     /**
-     * list with listeners that want to know new detected files.
-     */
-    private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
-
-    /**
-     * the http client connection to the http server of the card.
-     */
-    private CloseableHttpClient httpclient;
-
-    /**
      * a list of files that we already know of, we need this to detect the newly
      * created files.
      */
     private Set<FlashAirWiFiSDFile> knownFiles = new HashSet<>();
-
-    /**
-     * the lower level card this card wrappes.
-     */
-    private ICard potentialCard;
 
     /**
      * the network ssid.
@@ -118,7 +100,7 @@ public final class FlashAirWiFiSD implements ICard, Runnable {
      *            the wrapped low level card.
      */
     private FlashAirWiFiSD(ICard potentialCard) {
-        this.potentialCard = potentialCard;
+        super(potentialCard);
         this.ssid = executeOperation(GET_SSID, false);
         if (this.ssid != null) {
             collectCurrentFiles("/DCIM", null);
@@ -145,17 +127,6 @@ public final class FlashAirWiFiSD implements ICard, Runnable {
         }
         return null;
 
-    }
-
-    @Override
-    public boolean addListener(IFileListener fileListener) {
-        fileListeners.add(fileListener);
-        return true;
-    }
-
-    @Override
-    public IBrowse browse() {
-        return null;
     }
 
     /**
@@ -186,39 +157,14 @@ public final class FlashAirWiFiSD implements ICard, Runnable {
         }
     }
 
-    /**
-     * @return lazy created http client to connect to the card.
-     */
-    public CloseableHttpClient getHttpClient() {
-        if (httpclient == null) {
-            httpclient = HttpClients.createDefault();
-        }
-        return httpclient;
-    }
-
-    @Override
-    public InetAddress ipAddress() {
-        return potentialCard.ipAddress();
-    }
-
     @Override
     public int level() {
         return CARD_LEVEL;
     }
 
     @Override
-    public String mac() {
-        return potentialCard.mac();
-    }
-
-    @Override
     public void reconnect() {
 
-    }
-
-    @Override
-    public boolean removeListener(IFileListener fileListener) {
-        return fileListeners.remove(fileListener);
     }
 
     @Override
@@ -235,9 +181,7 @@ public final class FlashAirWiFiSD implements ICard, Runnable {
                     Set<FlashAirWiFiSDFile> newFiles = collectCurrentFiles("/DCIM", null);
                     if (newFiles != null) {
                         for (FlashAirWiFiSDFile newFile : newFiles) {
-                            for (IFileListener listener : fileListeners) {
-                                listener.notifyNewFile(this, newFile);
-                            }
+                            notifyNewFile(newFile);
                         }
                     }
                 }

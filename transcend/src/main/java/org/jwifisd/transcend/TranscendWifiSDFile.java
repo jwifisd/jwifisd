@@ -24,17 +24,42 @@ package org.jwifisd.transcend;
 
 import org.jwifisd.api.IWifiFile;
 
+/**
+ * a file respresentation of a file on the transcend wifi card.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class TranscendWifiSDFile implements IWifiFile {
 
+    /**
+     * the card where the file is located.
+     */
     private final TranscendWiFiSD card;
 
+    /**
+     * the lazy cached file contents of the file.
+     */
     private byte[] data;
 
+    /**
+     * the name of the file.
+     */
     private final String name;
 
+    /**
+     * the timestamp of the file.
+     */
     private long timestamp = -1L;
 
-    public TranscendWifiSDFile(TranscendWiFiSD card, String name) {
+    /**
+     * the constructor for a file on the card.
+     * 
+     * @param card
+     *            the card where the file is located.
+     * @param name
+     *            the name of the file.
+     */
+    protected TranscendWifiSDFile(TranscendWiFiSD card, String name) {
         this.name = name;
         this.card = card;
     }
@@ -47,6 +72,9 @@ public class TranscendWifiSDFile implements IWifiFile {
         return data;
     }
 
+    /**
+     * @return the timestamp of the file as {@link java.io.File#lastModified()}.
+     */
     public long getTimestamp() {
         if (timestamp < 0) {
             card.downloadFile(this);
@@ -64,10 +92,22 @@ public class TranscendWifiSDFile implements IWifiFile {
         return 0;
     }
 
+    /**
+     * set the data cache of the card.
+     * 
+     * @param data
+     *            the data to set.
+     */
     protected void setData(byte[] data) {
         this.data = data;
     }
 
+    /**
+     * set the timestamp of the file.
+     * 
+     * @param timestamp
+     *            the timestap to set.
+     */
     protected void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }

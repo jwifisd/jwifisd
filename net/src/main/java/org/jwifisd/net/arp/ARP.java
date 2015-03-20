@@ -13,43 +13,34 @@ package org.jwifisd.net.arp;
  * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Lesser Public License for more details.
  * 
  * You should have received a copy of the GNU General Lesser Public
- * License along with this program.  If not, see
+ * License along with this program. If not, see
  * <http://www.gnu.org/licenses/lgpl-3.0.html>.
  * #L%
  */
 
 import java.net.InetAddress;
 
+/**
+ * this class represents an arp entry. (a resolvement of a ip address to a mac
+ * (hardware) address.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class ARP {
 
-    public InetAddress getIpAdress() {
-        return ipAdress;
-    }
-
-    public String getMacAdress() {
-        return macAdress;
-    }
-
+    /**
+     * the ipaddress.
+     */
     private InetAddress ipAdress;
 
+    /**
+     * the mac address.
+     */
     private String macAdress;
-
-    protected void setIpAdress(InetAddress ipAdress) {
-        this.ipAdress = ipAdress;
-    }
-
-    protected void setMacAdress(String macAdress) {
-        this.macAdress = macAdress;
-    }
-
-    @Override
-    public int hashCode() {
-        return macAdress == null ? 0 : macAdress.hashCode();
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -63,5 +54,44 @@ public class ARP {
             }
         }
         return false;
+    }
+
+    /**
+     * @return the ip address.
+     */
+    public InetAddress getIpAdress() {
+        return ipAdress;
+    }
+
+    /**
+     * @return the mac address.
+     */
+    public String getMacAdress() {
+        return macAdress;
+    }
+
+    @Override
+    public int hashCode() {
+        return macAdress == null ? 0 : macAdress.hashCode();
+    }
+
+    /**
+     * set the ip address.
+     * 
+     * @param ipAdress
+     *            the new ip address.
+     */
+    protected void setIpAdress(InetAddress ipAdress) {
+        this.ipAdress = ipAdress;
+    }
+
+    /**
+     * set the mac address.
+     * 
+     * @param macAdress
+     *            the new mac address.
+     */
+    protected void setMacAdress(String macAdress) {
+        this.macAdress = macAdress;
     }
 }

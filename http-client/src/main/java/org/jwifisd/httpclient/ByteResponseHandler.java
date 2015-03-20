@@ -1,4 +1,4 @@
-package org.jwifisd.flashair;
+package org.jwifisd.httpclient;
 
 /*
  * #%L
@@ -35,7 +35,7 @@ import org.apache.http.util.EntityUtils;
  * 
  * @author Richard van Nieuwenhoven
  */
-final class ByteResponseHandler implements ResponseHandler<byte[]> {
+public final class ByteResponseHandler implements ResponseHandler<byte[]> {
 
     /**
      * the first http responce code from the range that respresends a ok.

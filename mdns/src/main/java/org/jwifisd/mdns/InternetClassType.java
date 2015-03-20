@@ -25,7 +25,6 @@ package org.jwifisd.mdns;
  * the internat class type used to describe the dns records.
  * 
  * @author Richard van Nieuwenhoven
- *
  */
 public enum InternetClassType {
     /**

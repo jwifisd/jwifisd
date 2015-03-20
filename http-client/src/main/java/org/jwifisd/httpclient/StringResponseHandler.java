@@ -1,4 +1,4 @@
-package org.jwifisd.flashair;
+package org.jwifisd.httpclient;
 
 /*
  * #%L
@@ -35,7 +35,7 @@ import org.apache.http.util.EntityUtils;
  * 
  * @author Richard van Nieuwenhoven
  */
-final class StringResponseHandler implements ResponseHandler<String> {
+public final class StringResponseHandler implements ResponseHandler<String> {
 
     @Override
     public String handleResponse(HttpResponse response) throws IOException {

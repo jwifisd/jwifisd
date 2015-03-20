@@ -6,9 +6,9 @@
 		<groupId>org.jwifisd</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>jwifisd-transcend</artifactId>
+	<artifactId>jwifisd-http-client</artifactId>
 	<name>${project.artifactId}</name>
-	<description>${project.artifactId} Protocol implementation</description>
+	<description>common http client stuff for diffrent cards</description>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
@@ -17,9 +17,9 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>jwifisd-http-client</artifactId>
-			<version>${project.version}</version>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.4</version>
 		</dependency>
 	</dependencies>
 	<properties>

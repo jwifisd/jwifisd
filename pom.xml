@@ -376,6 +376,7 @@
 		<module>eyefi</module>
 		<module>flashair</module>
 		<module>transcend</module>
+		<module>http-client</module>
 		<module>all</module>
 	</modules>
 	<dependencies>
