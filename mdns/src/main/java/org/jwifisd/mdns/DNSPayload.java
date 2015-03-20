@@ -39,82 +39,20 @@ import java.util.List;
  */
 public class DNSPayload extends DNSObject {
 
-    protected final DNSHeader dnsHeader;
-
-    List<Question> questions = new LinkedList<>();
-
-    List<Record<?>> answers = new LinkedList<>();
-
-    List<Record<?>> nameServerAuthorities = new LinkedList<>();
-
-    List<Record<?>> additionalRecords = new LinkedList<>();
-
-    public static class Question extends DNSObject {
-
-        private String fullQualifiedDomainName;
-
-        private InternetClassType internetClassType = InternetClassType.A;
-
-        private QClass qClass = QClass.Internet;
-
-        public String getFullQualifiedDomainName() {
-            return fullQualifiedDomainName;
-        }
-
-        public void setFullQualifiedDomainName(String fullQualifiedDomainName) {
-            this.fullQualifiedDomainName = fullQualifiedDomainName;
-        }
-
-        @Override
-        public void read(InputStream in) throws IOException {
-            fullQualifiedDomainName = readNameString(in);
-            internetClassType = InternetClassType.internetClassType(readUshort(in));
-            qClass = QClass.qclass(readUshort(in));
-        }
-
-        @Override
-        public void write(OutputStream out) throws IOException {
-            writeNameString(out, fullQualifiedDomainName);
-            writeUshort(out, internetClassType.getValue());
-            writeUshort(out, qClass.getValue());
-
-        }
-    }
-
-    public static class ServiceInformation extends DNSObject {
-
-        int priority;
-
-        int weight;
-
-        int port;
-
-        String canonicalTargetHostName;
-
-        @Override
-        public void read(InputStream in) throws IOException {
-            priority = readUshort(in);
-            weight = readUshort(in);
-            port = readUshort(in);
-            canonicalTargetHostName = readNameString(in);
-
-        }
-
-        @Override
-        public void write(OutputStream out) throws IOException {
-            writeUshort(out, priority);
-            writeUshort(out, weight);
-            writeUshort(out, port);
-            writeNameString(out, canonicalTargetHostName);
-        }
-
-    }
-
+    /**
+     * mailbox (= email address) object of a dns message.
+     */
     public static class Mailbox extends DNSObject {
 
-        String userName;
+        /**
+         * the domain name of the enail address.
+         */
+        private String domainName;
 
-        String domainName;
+        /**
+         * the name part of the email address.
+         */
+        private String userName;
 
         @Override
         public void read(InputStream in) throws IOException {
@@ -134,47 +72,20 @@ public class DNSPayload extends DNSObject {
 
     }
 
-    public static class StatementOfAuthority extends DNSObject {
-
-        private String primaryNameServerHostName;
-
-        private Mailbox administratorMailbox = new Mailbox();
-
-        private long serial;
-
-        private long referesh;
-
-        private long retry;
-
-        private long expire;
-
-        @Override
-        public void read(InputStream in) throws IOException {
-            primaryNameServerHostName = readNameString(in);
-            administratorMailbox.read(in);
-            serial = readUint(in);
-            referesh = readUint(in);
-            retry = readUint(in);
-            expire = readUint(in);
-        }
-
-        @Override
-        public void write(OutputStream out) throws IOException {
-            writeNameString(out, primaryNameServerHostName);
-            administratorMailbox.write(out);
-            writeUint(out, serial);
-            writeUint(out, referesh);
-            writeUint(out, retry);
-            writeUint(out, expire);
-
-        }
-    }
-
+    /**
+     * Mail excange server information.
+     */
     public static class MailExchange extends DNSObject {
 
-        int preference;
+        /**
+         * the mail exchange host name.
+         */
+        private String hostName;
 
-        String hostName;
+        /**
+         * the mail excange preference.
+         */
+        private int preference;
 
         @Override
         public void read(InputStream in) throws IOException {
@@ -191,17 +102,99 @@ public class DNSPayload extends DNSObject {
         }
     }
 
+    /**
+     * dns Question representation.
+     */
+    public static class Question extends DNSObject {
+
+        /**
+         * the full qualified domain name.
+         */
+        private String fullQualifiedDomainName;
+
+        /**
+         * the internet class type (normally A = ip adress).
+         */
+        private InternetClassType internetClassType = InternetClassType.A;
+
+        /**
+         * the Q class of the question (normally Integet).
+         */
+        private QClass qClass = QClass.Internet;
+
+        /**
+         * @return the full qualified domain name.
+         */
+        public String getFullQualifiedDomainName() {
+            return fullQualifiedDomainName;
+        }
+
+        @Override
+        public void read(InputStream in) throws IOException {
+            fullQualifiedDomainName = readNameString(in);
+            internetClassType = InternetClassType.internetClassType(readUshort(in));
+            qClass = QClass.qclass(readUshort(in));
+        }
+
+        /**
+         * set the the full qualified domain name.
+         * 
+         * @param fullQualifiedDomainName
+         *            the value to set.
+         */
+        public void setFullQualifiedDomainName(String fullQualifiedDomainName) {
+            this.fullQualifiedDomainName = fullQualifiedDomainName;
+        }
+
+        @Override
+        public void write(OutputStream out) throws IOException {
+            writeNameString(out, fullQualifiedDomainName);
+            writeUshort(out, internetClassType.getValue());
+            writeUshort(out, qClass.getValue());
+
+        }
+    }
+
+    /**
+     * response record of a dns message.
+     * 
+     * @param <PAYLOAD>
+     *            the contens of the response.
+     */
     public static class Record<PAYLOAD> extends DNSObject {
 
-        int owner;
+        /**
+         * the internet class type of the record.
+         */
+        private InternetClassType internetClassType = InternetClassType.A;
 
-        InternetClassType internetClassType = InternetClassType.A;
+        /**
+         * the owner index of the record.
+         */
+        private int owner;
 
-        QClass qClass = QClass.Internet;
+        /**
+         * the payload of the answer.
+         */
+        private PAYLOAD payload;
 
-        PAYLOAD payload;
+        /**
+         * the qClass of the record.
+         */
+        private QClass qClass = QClass.Internet;
 
-        long timeToLive;
+        /**
+         * the time this record has to live.
+         */
+        private long timeToLive;
+
+        /**
+         * 
+         * @return the payload of the answer.
+         */
+        public PAYLOAD getPayload() {
+            return payload;
+        }
 
         @Override
         public void read(InputStream in) throws IOException {
@@ -281,14 +274,190 @@ public class DNSPayload extends DNSObject {
             }
 
         }
+    }
 
-        public PAYLOAD getPayload() {
-            return payload;
+    /**
+     * The service information record payload.
+     */
+    public static class ServiceInformation extends DNSObject {
+
+        /**
+         * the canonical target host name.
+         */
+        private String canonicalTargetHostName;
+
+        /**
+         * the port number of the service.
+         */
+        private int port;
+
+        /**
+         * the priority of the service.
+         */
+        private int priority;
+
+        /**
+         * the weight of the service.
+         */
+        private int weight;
+
+        @Override
+        public void read(InputStream in) throws IOException {
+            priority = readUshort(in);
+            weight = readUshort(in);
+            port = readUshort(in);
+            canonicalTargetHostName = readNameString(in);
+
+        }
+
+        @Override
+        public void write(OutputStream out) throws IOException {
+            writeUshort(out, priority);
+            writeUshort(out, weight);
+            writeUshort(out, port);
+            writeNameString(out, canonicalTargetHostName);
+        }
+
+    }
+
+    /**
+     * Statement of authority record payload.
+     */
+    public static class StatementOfAuthority extends DNSObject {
+
+        /**
+         * the administrator mailbox information.
+         */
+        private Mailbox administratorMailbox = new Mailbox();
+
+        /**
+         * the expiration time.
+         */
+        private long expire;
+
+        /**
+         * the primary name server host.
+         */
+        private String primaryNameServerHostName;
+
+        /**
+         * the refresh interfall.
+         */
+        private long referesh;
+
+        /**
+         * the retry count.
+         */
+        private long retry;
+
+        /**
+         * the serial number.
+         */
+        private long serial;
+
+        @Override
+        public void read(InputStream in) throws IOException {
+            primaryNameServerHostName = readNameString(in);
+            administratorMailbox.read(in);
+            serial = readUint(in);
+            referesh = readUint(in);
+            retry = readUint(in);
+            expire = readUint(in);
+        }
+
+        @Override
+        public void write(OutputStream out) throws IOException {
+            writeNameString(out, primaryNameServerHostName);
+            administratorMailbox.write(out);
+            writeUint(out, serial);
+            writeUint(out, referesh);
+            writeUint(out, retry);
+            writeUint(out, expire);
+
         }
     }
 
+    /**
+     * the list of additional records in this message.
+     */
+    private List<Record<?>> additionalRecords = new LinkedList<>();
+
+    /**
+     * the list of answers in this message.
+     */
+    private List<Record<?>> answers = new LinkedList<>();
+
+    /**
+     * the dns header for needed infos.
+     */
+    private final DNSHeader dnsHeader;
+
+    /**
+     * the list of name server authorities in this message.
+     */
+    private List<Record<?>> nameServerAuthorities = new LinkedList<>();
+
+    /**
+     * the list of questions in this message.
+     */
+    private List<Question> questions = new LinkedList<>();
+
+    /**
+     * constructor for the payload using the header and information source.
+     * 
+     * @param dnsHeader
+     *            the dns header
+     */
     public DNSPayload(DNSHeader dnsHeader) {
         this.dnsHeader = dnsHeader;
+    }
+
+    /**
+     * add a question for a domain name to the payload.
+     * 
+     * @param fullQualifiedDomainName
+     *            the full qualified name to search.
+     */
+    public void addQuestion(String fullQualifiedDomainName) {
+        Question question = new Question();
+        question.internetClassType = InternetClassType.A;
+        question.qClass = QClass.Internet;
+        question.fullQualifiedDomainName = fullQualifiedDomainName;
+        questions.add(question);
+    }
+
+    /**
+     * get the payload answer with index.
+     * 
+     * @param index
+     *            the answer index to return.
+     * @return the answer at the specified inde.
+     */
+    public Record<?> getAnswer(int index) {
+        return answers.get(index);
+    }
+
+    /**
+     * @return the full qualified domain name.
+     */
+    public String getFullQualifiedDomainName() {
+        if (dnsHeader.isResponse()) {
+            answers.get(0).payload.toString();
+        } else {
+            questions.get(0).getFullQualifiedDomainName();
+        }
+        return null;
+    }
+
+    /**
+     * get the question with the specified index.
+     * 
+     * @param index
+     *            the index of the question
+     * @return the question with the specified index.
+     */
+    public Question getQuestion(int index) {
+        return questions.get(index);
     }
 
     @Override
@@ -319,6 +488,18 @@ public class DNSPayload extends DNSObject {
 
     }
 
+    /**
+     * update the header info accourding to the number of elelments ind the
+     * differend collections.
+     */
+    public void updateHeader() {
+        dnsHeader.setNumberOfEntriesInQuestionSection(questions.size());
+        dnsHeader.setNumberOfResourceRecordsInAnswerSection(answers.size());
+        dnsHeader.setNumberOfNameServerRecordsInAuthoritySection(nameServerAuthorities.size());
+        dnsHeader.setNumberOfResourceRecordsInAdditionalRecordsAnswerSection(additionalRecords.size());
+
+    }
+
     @Override
     public void write(OutputStream out) throws IOException {
         for (Question question : questions) {
@@ -333,39 +514,6 @@ public class DNSPayload extends DNSObject {
         for (Record<?> record : additionalRecords) {
             record.write(out);
         }
-    }
-
-    public String getFullQualifiedDomainName() {
-        if (dnsHeader.isResponse()) {
-            answers.get(0).payload.toString();
-        } else {
-            questions.get(0).getFullQualifiedDomainName();
-        }
-        return null;
-    }
-
-    public Question getQuestion(int index) {
-        return questions.get(index);
-    }
-
-    public Record<?> getAnswer(int index) {
-        return answers.get(index);
-    }
-
-    public void updateHeader() {
-        dnsHeader.setNumberOfEntriesInQuestionSection(questions.size());
-        dnsHeader.setNumberOfResourceRecordsInAnswerSection(answers.size());
-        dnsHeader.setNumberOfNameServerRecordsInAuthoritySection(nameServerAuthorities.size());
-        dnsHeader.setNumberOfResourceRecordsInAdditionalRecordsAnswerSection(additionalRecords.size());
-
-    }
-
-    public void addQuestion(String fullQualifiedDomainName) {
-        Question question = new Question();
-        question.internetClassType = InternetClassType.A;
-        question.qClass = QClass.Internet;
-        question.fullQualifiedDomainName = fullQualifiedDomainName;
-        questions.add(question);
     }
 
 }
