@@ -1,10 +1,13 @@
+/**
+ * This package contains a number of utilities to work with local subnetworks.
+ */
 package org.jwifisd.net;
 
 /*
  * #%L
- * jwifisd-net
+ * jwifisd-detector-55777
  * %%
- * Copyright (C) 2012 - 2015 jwifisd
+ * Copyright (C) 2015 jwifisd
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -22,20 +25,3 @@ package org.jwifisd.net;
  * #L%
  */
 
-/**
- * a interface to implement scanning of available subnets. thsi interface is
- * used called for every found local subnet.
- * 
- * @author Richard van Nieuwenhoven
- *
- */
-public interface IDoWithNetwork {
-
-    /**
-     * local subnet detected do something with it.
-     * 
-     * @param localNetwork
-     *            the detected local subnet.
-     */
-    void run(LocalNetwork localNetwork);
-}

@@ -32,21 +32,71 @@ import java.util.Enumeration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * this is a scanner that will scann the local system for connected subnets. it
+ * will report found local subnets with a interface call back.
+ * 
+ * @author Richard van Nieuwenhoven
+ */
 public class LocalNetworkScanner {
 
+    /**
+     * bytes in a ip v4 address.
+     */
+    private static final int BYTES_IN_IP_V6 = 6;
+
+    /**
+     * bytes in a ip v6 address.
+     */
+    private static final int BYTES_IN_IP_V4 = 4;
+
+    /**
+     * the logger to log to.
+     */
     private static final Logger LOG = LoggerFactory.getLogger(LocalNetworkScanner.class);
 
+    /**
+     * scan the local system for networks (defaults to only ip v4 networks).
+     * 
+     * @param doWithNetwork
+     *            the callback to call when a network is detected.
+     * @throws IOException
+     *             if something goes wrong
+     */
     public void scan(IDoWithNetwork doWithNetwork) throws IOException {
         scan(doWithNetwork, true);
     }
 
+    /**
+     * scan the local system for networks (defaults to only ip v4 networks).
+     * 
+     * @param doWithNetwork
+     *            the callback to call when a network is detected.
+     * @param ipv4
+     *            scan only ipv4 if true
+     * @throws IOException
+     *             if something goes wrong
+     */
     public void scan(IDoWithNetwork doWithNetwork, boolean ipv4) throws IOException {
         Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
         for (NetworkInterface netint : Collections.list(nets)) {
-            doWithNetwork(netint, ipv4 ? 4 : 16, doWithNetwork);
+            doWithNetwork(netint, ipv4 ? BYTES_IN_IP_V4 : BYTES_IN_IP_V6, doWithNetwork);
         }
     }
 
+    /**
+     * a network interface was found, now detect if it a connected to a local
+     * subnet.
+     * 
+     * @param netint
+     *            the network interface
+     * @param adresslength
+     *            the adress length 4 = ipv4, 6 = ipv6
+     * @param doWithNetwork
+     *            the callback to call if the network has a local subnet.
+     * @throws IOException
+     *             if something goes wrong
+     */
     private void doWithNetwork(NetworkInterface netint, int adresslength, IDoWithNetwork doWithNetwork) throws IOException {
         LOG.info("Interface with name: {}", netint.getName());
 
@@ -76,6 +126,14 @@ public class LocalNetworkScanner {
         }
     }
 
+    /**
+     * detetcted a local subnet now call the callback.
+     * 
+     * @param localNetwork
+     *            the detetced local subnet.
+     * @param doWithNetwork
+     *            the callback to call.
+     */
     private void doWithNetwork(LocalNetwork localNetwork, IDoWithNetwork doWithNetwork) {
         LOG.info("localNetwork: {}", localNetwork);
         doWithNetwork.run(localNetwork);
