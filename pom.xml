@@ -29,7 +29,7 @@
 		</repository>
 		<snapshotRepository>
 			<id>sonatype-nexus-staging</id>
-			<name>jwifisd sonytype Snapshot Maven 2 repository</name>
+			<name>jwifisd sonatype Snapshot Maven 2 repository</name>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<site>

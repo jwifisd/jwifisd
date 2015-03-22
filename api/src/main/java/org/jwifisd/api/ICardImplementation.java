@@ -23,14 +23,14 @@ package org.jwifisd.api;
  */
 /**
  * API to create a higher level API over a card. For example a newer version of
- * a card has a better way to do something special. All cards of jwifids will
+ * a card has a better way to do something special. All cards of jwifisd will
  * never go lower than 1 so you can extent the implementation by using lower
  * numbers. You can provide implementations by using the java service loader
  * pattern.
  * 
  * @author Richard van Nieuwenhoven
  */
-public interface ICardImplentation {
+public interface ICardImplementation {
 
     /**
      * A card was detected and this implementation is asked if it can create a

@@ -46,9 +46,9 @@ import org.slf4j.LoggerFactory;
 public final class FlashAirWiFiSD extends HttpBasedCard implements Runnable {
 
     /**
-     * default poll interfall for new files (in milliseconds).
+     * default poll interval for new files (in milliseconds).
      */
-    private static final int DEFAULT_POLL_INTERERFALL = 333;
+    private static final int DEFAULT_POLL_INTERVAL = 333;
 
     /**
      * this card can handle the api very good so level 1 is used.
@@ -67,8 +67,8 @@ public final class FlashAirWiFiSD extends HttpBasedCard implements Runnable {
     private static final String GET_SSID = "104";
 
     /**
-     * operation used to check is any write operation has occured on the card.
-     * We use this operation to check periotically for changes.
+     * operation used to check is any write operation has occurred on the card.
+     * We use this operation to check periodically for changes.
      */
     private static final String GET_UPDATE_STATUS = "102";
 
@@ -89,7 +89,7 @@ public final class FlashAirWiFiSD extends HttpBasedCard implements Runnable {
     private String ssid;
 
     /**
-     * the running thread that periotically checks for new files.
+     * the running thread that periodically checks for new files.
      */
     private Thread thread;
 
@@ -172,9 +172,9 @@ public final class FlashAirWiFiSD extends HttpBasedCard implements Runnable {
         try {
             while (thread == Thread.currentThread()) {
                 try {
-                    Thread.sleep(pollInterfall());
+                    Thread.sleep(pollInterval());
                 } catch (InterruptedException e) {
-                    LOG.info("poll interruppted", e);
+                    LOG.info("poll interrupted", e);
                 }
                 String status = executeOperation(GET_UPDATE_STATUS, true);
                 if (!status.equals("0")) {
@@ -192,11 +192,11 @@ public final class FlashAirWiFiSD extends HttpBasedCard implements Runnable {
     }
 
     /**
-     * @return the poll interfall in milliseconds. this should be configurable
+     * @return the poll interval in milliseconds. this should be configurable
      *         over the card properties.
      */
-    public int pollInterfall() {
-        return DEFAULT_POLL_INTERERFALL;
+    public int pollInterval() {
+        return DEFAULT_POLL_INTERVAL;
     }
 
     @Override

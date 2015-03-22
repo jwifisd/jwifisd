@@ -32,7 +32,7 @@ import java.util.List;
 public interface IBrowse {
 
     /**
-     * List all directories unter the specified directory. Only directories are
+     * List all directories under the specified directory. Only directories are
      * returned all normal files are omitted.
      * 
      * @param directory
@@ -42,7 +42,7 @@ public interface IBrowse {
     List<String> listDirectories(String directory);
 
     /**
-     * List all files in the specified directory. Only files are returned all
+     * List all files in the specified directory. Only files are returned -
      * directories are omitted.
      * 
      * @param directory

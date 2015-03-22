@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This detector implementation detects cards that use the 55777 udp port as
- * detection method. A hello message is broadcasted and as an answer the card
+ * detection method. A hello message is broadcast and as an answer the card
  * information is send back.
  * 
  * @author Richard van Nieuwenhoven

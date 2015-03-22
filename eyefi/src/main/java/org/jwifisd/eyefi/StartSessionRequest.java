@@ -43,7 +43,7 @@ public class StartSessionRequest extends EyefiRequest {
     private String ipAddress;
 
     /**
-     * the mac adress of the card.
+     * the mac address of the card.
      */
     private String macaddress;
 

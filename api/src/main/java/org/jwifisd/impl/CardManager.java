@@ -31,13 +31,7 @@ import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.Set;
 
-import org.jwifisd.api.ICard;
-import org.jwifisd.api.ICardImplentation;
-import org.jwifisd.api.ICardManager;
-import org.jwifisd.api.IDetector;
-import org.jwifisd.api.IFileListener;
-import org.jwifisd.api.INotifier;
-import org.jwifisd.api.IWifiFile;
+import org.jwifisd.api.*;
 import org.jwifisd.net.IDoWithNetwork;
 import org.jwifisd.net.LocalNetwork;
 import org.jwifisd.net.LocalNetworkScanner;
@@ -45,8 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The sigleton card manager that will controll the wifisd system and all cards
- * commining in its reach.
+ * The singleton card manager that will control the wifisd system and all cards
+ * coming in its reach.
  * 
  * @author Richard van Nieuwenhoven
  */
@@ -56,7 +50,7 @@ public final class CardManager implements ICardManager, Runnable, IDoWithNetwork
      * service loader for finding the best card implementation to access a
      * card.
      */
-    private static final ServiceLoader<ICardImplentation> CARD_IMPL_SERVICE_LOADER = ServiceLoader.load(ICardImplentation.class);
+    private static final ServiceLoader<org.jwifisd.api.ICardImplementation> CARD_IMPL_SERVICE_LOADER = ServiceLoader.load(ICardImplementation.class);
 
     /**
      * service loader for the detector implementations.
@@ -275,10 +269,10 @@ public final class CardManager implements ICardManager, Runnable, IDoWithNetwork
      * @return the better implementation or the card itself.
      */
     protected ICard findBetterImplementation(ICard card) {
-        Iterator<ICardImplentation> cardImpl = CARD_IMPL_SERVICE_LOADER.iterator();
+        Iterator<ICardImplementation> cardImpl = CARD_IMPL_SERVICE_LOADER.iterator();
         while (cardImpl.hasNext()) {
-            ICardImplentation cardImplentation = (ICardImplentation) cardImpl.next();
-            ICard newCard = cardImplentation.decreaseLevel(card);
+            ICardImplementation cardImplementation = cardImpl.next();
+            ICard newCard = cardImplementation.decreaseLevel(card);
             if (newCard != null && newCard.level() < card.level()) {
                 card = newCard;
             }

@@ -1,16 +1,16 @@
 # JWiFiSD
 
-JWiFiSD is a generic pure Java library API to access the different wifi-sd cards available on the market in a transparent way. The Java developer using the library does not have to know the specifics of the differed cards. They will be detected automatically and appropriate events are send back over the Java API.
+JWiFiSD is a generic pure Java library API to access the different wifi-sd cards available on the market in a transparent way. The Java developer using the library does not have to know the specifics of the different cards. They will be detected automatically and appropriate events are send back over the Java API.
 
 Currently implementations for 
 
 - eyefi (incl. mobi cards)
-- transdient wifisd
-- toschiba flashair
+- transcent wifi SD
+- toshiba flashair
 
 are implemented. before releasing to central, implementation of a file-browser based API are added (optionally because eyefi does not support browsing the files). Also the "china" card WIFI@SDCF will be implemented shortly.
 
-Not jet implemented (but planned) are versions for
+Not yet implemented (but planned) are versions for
 
 - PQI Air card
 - ez share

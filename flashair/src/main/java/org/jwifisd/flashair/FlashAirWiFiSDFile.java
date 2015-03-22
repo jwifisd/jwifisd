@@ -283,7 +283,7 @@ public class FlashAirWiFiSDFile implements IWifiFile {
      * @param card
      *            card where the file is located
      * @param columns
-     *            collumns of the file list.
+     *            columns of the file list.
      */
     public FlashAirWiFiSDFile(FlashAirWiFiSD card, String... columns) {
         this.dateTime = new DateTime(columns[FILE_LIST_COLUMN_DATE], columns[FILE_LIST_COLUMN_TIME]);

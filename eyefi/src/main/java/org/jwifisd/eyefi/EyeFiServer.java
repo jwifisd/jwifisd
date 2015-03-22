@@ -69,7 +69,7 @@ public class EyeFiServer extends NanoHTTPD {
          * the digest of the file.
          * TODO: check the digest!
          */
-        private final String integerityDigest;
+        private final String integrityDigest;
 
         /**
          * the soap envelope of the request message.
@@ -91,7 +91,7 @@ public class EyeFiServer extends NanoHTTPD {
             }
             this.eyefiFile = new File(pathname);
 
-            this.integerityDigest = session.getParms().get("INTEGRITYDIGEST");
+            this.integrityDigest = session.getParms().get("INTEGRITYDIGEST");
             this.soapEnvelope = session.getParms().get("SOAPENVELOPE");
 
         }
@@ -215,7 +215,7 @@ public class EyeFiServer extends NanoHTTPD {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new FaultResponce();
+        return new FaultResponse();
     }
 
     /**

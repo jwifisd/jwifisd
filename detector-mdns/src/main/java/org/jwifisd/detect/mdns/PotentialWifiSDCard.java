@@ -90,7 +90,7 @@ public class PotentialWifiSDCard implements ICard {
 
     @Override
     public int level() {
-        return ICard.BARE_PRIMITIV_CARD_LAVEL;
+        return ICard.BARE_PRIMITIVE_CARD_LEVEL;
     }
 
     @Override

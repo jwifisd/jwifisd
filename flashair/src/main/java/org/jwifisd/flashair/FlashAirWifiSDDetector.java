@@ -23,7 +23,7 @@ package org.jwifisd.flashair;
  */
 
 import org.jwifisd.api.ICard;
-import org.jwifisd.api.ICardImplentation;
+import org.jwifisd.api.ICardImplementation;
 
 /**
  * Detector that checks is a low level card uses the flashair api, so the
@@ -31,7 +31,7 @@ import org.jwifisd.api.ICardImplentation;
  * 
  * @author Richard van Nieuwenhoven
  */
-public class FlashAirWifiSDDetector implements ICardImplentation {
+public class FlashAirWifiSDDetector implements ICardImplementation {
 
     @Override
     public ICard decreaseLevel(ICard card) {

@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * this is a scanner that will scann the local system for connected subnets. it
+ * this is a scanner that will scan the local system for connected subnets. it
  * will report found local subnets with a interface call back.
  * 
  * @author Richard van Nieuwenhoven
@@ -91,7 +91,7 @@ public class LocalNetworkScanner {
      * @param netint
      *            the network interface
      * @param adresslength
-     *            the adress length 4 = ipv4, 6 = ipv6
+     *            the address length 4 = ipv4, 6 = ipv6
      * @param doWithNetwork
      *            the callback to call if the network has a local subnet.
      * @throws IOException
@@ -101,7 +101,7 @@ public class LocalNetworkScanner {
         LOG.info("Interface with name: {}", netint.getName());
 
         if (netint.isLoopback()) {
-            LOG.info("Inteface is loopback, skip that one");
+            LOG.info("Interface is loopback, skip that one");
             return;
         }
         int networkPrefixLength = -1;
@@ -110,7 +110,7 @@ public class LocalNetworkScanner {
                 networkPrefixLength = Math.max(networkPrefixLength, adress.getNetworkPrefixLength());
                 LOG.info("found prefix {}", networkPrefixLength);
             } else {
-                LOG.info("Address scipped (ipv4/ipv6)", adress.getAddress());
+                LOG.info("Address skipped (ipv4/ipv6)", adress.getAddress());
             }
         }
         if (networkPrefixLength > 1) {
@@ -127,10 +127,10 @@ public class LocalNetworkScanner {
     }
 
     /**
-     * detetcted a local subnet now call the callback.
+     * detected a local subnet now call the callback.
      * 
      * @param localNetwork
-     *            the detetced local subnet.
+     *            the detected local subnet.
      * @param doWithNetwork
      *            the callback to call.
      */

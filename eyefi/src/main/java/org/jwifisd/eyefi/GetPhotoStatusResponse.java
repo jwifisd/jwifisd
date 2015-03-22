@@ -29,7 +29,7 @@ package org.jwifisd.eyefi;
 public class GetPhotoStatusResponse extends EyefiResponse {
 
     /**
-     * craete a photo status response.
+     * create a photo status response.
      * 
      * @param statusId
      *            the status id to use.

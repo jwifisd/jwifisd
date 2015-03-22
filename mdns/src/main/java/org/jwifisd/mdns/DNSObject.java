@@ -181,7 +181,9 @@ public abstract class DNSObject {
             int index = 0;
             while (index < byteArray.length) {
                 int size = byteArray[index++] & BYTE_BIT_MASK;
-                result.add(new String(byteArray, index, size, Charset.forName("UTF-8")));
+                if (size != 0) {
+                    result.add(new String(byteArray, index, size, Charset.forName("UTF-8")));
+                }
                 index += size;
             }
             return result.toArray(new String[result.size()]);

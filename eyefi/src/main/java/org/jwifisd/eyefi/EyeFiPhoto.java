@@ -47,7 +47,7 @@ public class EyeFiPhoto implements IWifiFile {
      * construct a eyefi card for the name and the file contents.
      * 
      * @param name
-     *            the anme of the file
+     *            the name of the file
      * @param data
      *            the contents of the file.
      */

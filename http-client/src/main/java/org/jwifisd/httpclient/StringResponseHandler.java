@@ -40,7 +40,7 @@ public final class StringResponseHandler implements ResponseHandler<String> {
     @Override
     public String handleResponse(HttpResponse response) throws IOException {
         int status = response.getStatusLine().getStatusCode();
-        if (status >= ByteResponseHandler.START_HTTP_OK_RESPONSE_RAGE && status < ByteResponseHandler.END_HTTP_OK_RESPONSE_RAGE) {
+        if (status >= ByteResponseHandler.START_HTTP_OK_RESPONSE_RANGE && status < ByteResponseHandler.END_HTTP_OK_RESPONSE_RANGE) {
             HttpEntity entity = response.getEntity();
             return entity != null ? EntityUtils.toString(entity) : null;
         } else {

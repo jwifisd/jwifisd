@@ -32,18 +32,18 @@ import java.net.InetAddress;
 public interface ICard {
 
     /**
-     * this level is used for cards that are just detected but have no protokol
+     * this level is used for cards that are just detected but have no protocol
      * support yet.
      */
-    int BARE_PRIMITIV_CARD_LAVEL = 100;
+    int BARE_PRIMITIVE_CARD_LEVEL = 100;
 
     /**
      * Add a file listener to the card that will get notified if a new file was
      * detected on the card.
      * 
      * @param fileListener
-     *            the fiel listener to activate.
-     * @return true if the listener was installed. false will hapen if the card
+     *            the file listener to activate.
+     * @return true if the listener was installed. false will happen if the card
      *         is not capable of detecting new files
      */
     boolean addListener(IFileListener fileListener);
@@ -55,7 +55,7 @@ public interface ICard {
     IBrowse browse();
 
     /**
-     * @return the current ip adress of the card.
+     * @return the current ip address of the card.
      */
     InetAddress ipAddress();
 
@@ -67,7 +67,7 @@ public interface ICard {
     int level();
 
     /**
-     * @return the network mac adress of the card.
+     * @return the network mac address of the card.
      */
     String mac();
 
@@ -80,13 +80,13 @@ public interface ICard {
      * disables the file listener.
      * 
      * @param fileListener
-     *            the listener to diable.
+     *            the listener to disable.
      * @return true if the listener was disabled.
      */
     boolean removeListener(IFileListener fileListener);
 
     /**
-     * @return the human readable titel of the card.
+     * @return the human readable title of the card.
      */
     String title();
 

@@ -22,16 +22,16 @@ package org.jwifisd.eyefi;
  * #L%
  */
 /**
- * Soap response to send when an error occures.
+ * Soap response to send when an error occurs.
  * 
  * @author Richard van Nieuwenhoven
  */
-public class FaultResponce extends EyefiResponse {
+public class FaultResponse extends EyefiResponse {
 
     /**
      * create a soap error response.
      */
-    public FaultResponce() {
+    public FaultResponse() {
         super("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + //
                 "<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">" + //
                 /**/"<SOAP-ENV:Body>" + //

@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 import org.jwifisd.api.ICard;
-import org.jwifisd.api.ICardImplentation;
+import org.jwifisd.api.ICardImplementation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Richard van Nieuwenhoven
  */
-public class TranscendWifiSDDetector implements ICardImplentation {
+public class TranscendWifiSDDetector implements ICardImplementation {
 
     /**
      * the logger to log to.
@@ -53,11 +53,11 @@ public class TranscendWifiSDDetector implements ICardImplentation {
                 if (westec.isConnected()) {
                     return new TranscendWiFiSD(card, westec);
                 } else {
-                    LOG.warn("strage... the card says its a Trancend but it does not let me connect to 5566");
+                    LOG.warn("strange... the card says its a Trancend but it does not let me connect to 5566");
                     return null;
                 }
             } catch (IOException e) {
-                LOG.warn("strage... the card says its a Trancend but it does not fullfill the protocol", e);
+                LOG.warn("strage... the card says its a Trancend but it does not fulfill the protocol", e);
                 return null;
             } finally {
                 if (westec != null && !westec.isClosed()) {

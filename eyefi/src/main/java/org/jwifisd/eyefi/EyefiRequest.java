@@ -33,7 +33,7 @@ import javax.xml.stream.events.XMLEvent;
  * This is the abstract eyefi request parser. the eyefi card will send soap
  * messages to the server, every expected message type is represented by a
  * subclass. These subclasses wil parse the message for the message attributes.
- * this abstract class conains the helper methods to parse the soap xml.
+ * this abstract class contains the helper methods to parse the soap xml.
  * 
  * @author Richard van Nieuwenhoven
  */

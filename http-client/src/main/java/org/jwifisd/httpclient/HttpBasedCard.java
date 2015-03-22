@@ -49,12 +49,12 @@ public abstract class HttpBasedCard implements ICard {
     private CloseableHttpClient httpclient;
 
     /**
-     * the lower level card this card wrappes.
+     * the lower level card this card wraps.
      */
     private final ICard potentialCard;
 
     /**
-     * construtor for http based cards.
+     * constructor for http based cards.
      * 
      * @param potentialCard
      *            the lower level potential card with the ip and mac address.
@@ -64,7 +64,7 @@ public abstract class HttpBasedCard implements ICard {
     }
 
     /**
-     * @return lazy created http client to connect to the card.
+     * @return lazily created http client to connect to the card.
      */
     public CloseableHttpClient getHttpClient() {
         if (httpclient == null) {

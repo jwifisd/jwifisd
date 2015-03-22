@@ -38,7 +38,7 @@ public final class ScannAll {
     /**
      * Sleep interval.
      */
-    private static final int SLEEP_INTERFALL = 500;
+    private static final int SLEEP_INTERVAL = 500;
 
     /**
      * helper class should not be instantiated.
@@ -72,8 +72,7 @@ public final class ScannAll {
             }
         });
         while (true) {
-            Thread.sleep(SLEEP_INTERFALL);
+            Thread.sleep(SLEEP_INTERVAL);
         }
     }
-
 }

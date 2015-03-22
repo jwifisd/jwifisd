@@ -37,7 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Wifi card implmentation for Transcend WiFi SD cards, uses a lower level
+ * Wifi card implementation for Transcend WiFi SD cards, uses a lower level
  * detected card as a base.
  * 
  * @author Richard van Nieuwenhoven
@@ -60,7 +60,7 @@ public class TranscendWiFiSD extends HttpBasedCard implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger(TranscendWiFiSD.class);
 
     /**
-     * the running thread that periotically checks for new files.
+     * the running thread that periodically checks for new files.
      */
     private Thread thread;
 
@@ -108,6 +108,7 @@ public class TranscendWiFiSD extends HttpBasedCard implements Runnable {
 
             byte[] responseBody = getHttpClient().execute(httpget, new ByteResponseHandler());
             wifiFile.setData(responseBody);
+            // TODO: set timestamp?
         } catch (Exception e) {
             LOG.error("TranscendWiFiSD could not download file data!", e);
         }
@@ -144,7 +145,7 @@ public class TranscendWiFiSD extends HttpBasedCard implements Runnable {
                 if (oneByte != 0) {
                     lineBytes.write(oneByte);
                 } else {
-                    // line komplete
+                    // line complete
                     byte[] lineByteArray = lineBytes.toByteArray();
                     int offset = 0;
                     while (lineByteArray[offset] == '>' || lineByteArray[offset] == '<') {

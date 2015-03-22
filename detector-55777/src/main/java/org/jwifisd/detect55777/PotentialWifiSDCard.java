@@ -63,7 +63,7 @@ public class PotentialWifiSDCard implements ICard {
     private InetAddress router;
 
     /**
-     * the card mode if it could be deteted.
+     * the card mode if it could be detected.
      */
     private String mode;
 
@@ -114,7 +114,7 @@ public class PotentialWifiSDCard implements ICard {
             mac = ARPControl.macAdressOf(this.ip);
         } catch (Exception e) {
             // its a string so this can not happen..
-            throw new IllegalStateException("io exception in strean reading?", e);
+            throw new IllegalStateException("io exception in stream reading?", e);
         }
     }
 
@@ -162,7 +162,7 @@ public class PotentialWifiSDCard implements ICard {
 
     @Override
     public int level() {
-        return ICard.BARE_PRIMITIV_CARD_LAVEL;
+        return ICard.BARE_PRIMITIVE_CARD_LEVEL;
     }
 
     @Override

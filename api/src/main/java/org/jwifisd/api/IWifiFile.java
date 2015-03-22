@@ -22,9 +22,9 @@ package org.jwifisd.api;
  * #L%
  */
 /**
- * this inreface represents a file that is available on a wifi card, it depends
+ * this interface represents a file that is available on a wifi card. It depends
  * on the implementation if the data is lazy loaded from the card, copied
- * locally or available in memory so be carefull not to keep them in memory over
+ * locally or available in memory so be careful not to keep them in memory over
  * long periods.
  * 
  * @author Richard van Nieuwenhoven
@@ -37,7 +37,7 @@ public interface IWifiFile {
     void clean();
 
     /**
-     * @return the data contained in the file, this is normaly lazy loaded from
+     * @return the data contained in the file, this is normally lazy loaded from
      *         the card but sometimes it is already in memory.
      */
     byte[] getData();

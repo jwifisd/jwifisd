@@ -25,7 +25,7 @@ package org.jwifisd.transcend;
 import org.jwifisd.api.IWifiFile;
 
 /**
- * a file respresentation of a file on the transcend wifi card.
+ * a file representation of a file on the transcend wifi card.
  * 
  * @author Richard van Nieuwenhoven
  */
@@ -73,6 +73,8 @@ public class TranscendWifiSDFile implements IWifiFile {
     }
 
     /**
+     * TODO: shouldn't that be the code for {@code timestamp}?
+     * 
      * @return the timestamp of the file as {@link java.io.File#lastModified()}.
      */
     public long getTimestamp() {
@@ -106,7 +108,7 @@ public class TranscendWifiSDFile implements IWifiFile {
      * set the timestamp of the file.
      * 
      * @param timestamp
-     *            the timestap to set.
+     *            the timestamp to set.
      */
     protected void setTimestamp(long timestamp) {
         this.timestamp = timestamp;

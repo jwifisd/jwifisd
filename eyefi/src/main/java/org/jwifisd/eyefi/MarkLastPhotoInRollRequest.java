@@ -75,5 +75,4 @@ public class MarkLastPhotoInRollRequest extends EyefiRequest {
         result.append(")");
         return result.toString();
     }
-
 }

@@ -37,7 +37,7 @@ import org.jwifisd.net.LocalNetwork;
 public class EyeFiDetector implements IDetector {
 
     /**
-     * Because there can only be one server in the jvm this must be a singlton.
+     * Because there can only be one server in the jvm this must be a singleton.
      * 
      * @author Richard van Nieuwenhoven
      */

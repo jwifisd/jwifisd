@@ -38,19 +38,19 @@ import org.apache.http.util.EntityUtils;
 public final class ByteResponseHandler implements ResponseHandler<byte[]> {
 
     /**
-     * the first http responce code from the range that respresends a ok.
+     * the first http response code from the range that represents a ok.
      */
-    protected static final int START_HTTP_OK_RESPONSE_RAGE = 200;
+    protected static final int START_HTTP_OK_RESPONSE_RANGE = 200;
 
     /**
-     * the last http responce code from the range that respresends a ok.
+     * the last http response code from the range that represents a ok.
      */
-    protected static final int END_HTTP_OK_RESPONSE_RAGE = 300;
+    protected static final int END_HTTP_OK_RESPONSE_RANGE = 300;
 
     @Override
     public byte[] handleResponse(HttpResponse response) throws IOException {
         int status = response.getStatusLine().getStatusCode();
-        if (status >= START_HTTP_OK_RESPONSE_RAGE && status < END_HTTP_OK_RESPONSE_RAGE) {
+        if (status >= START_HTTP_OK_RESPONSE_RANGE && status < END_HTTP_OK_RESPONSE_RANGE) {
             HttpEntity entity = response.getEntity();
             return entity != null ? EntityUtils.toByteArray(entity) : null;
         } else {

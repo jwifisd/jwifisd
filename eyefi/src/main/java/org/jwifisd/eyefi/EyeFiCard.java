@@ -33,14 +33,14 @@ import org.jwifisd.api.ICard;
 import org.jwifisd.api.IFileListener;
 
 /**
- * The exefi card detected by soap messages.
+ * The eyefi card detected by soap messages.
  * 
  * @author Richard van Nieuwenhoven
  */
 public class EyeFiCard implements ICard {
 
     /**
-     * all listeners that wanht to know when a new file was send to the eyefi
+     * all listeners that want to know when a new file was send to the eyefi
      * server.
      */
     private Set<IFileListener> fileListeners = Collections.synchronizedSet(new HashSet<IFileListener>());
@@ -51,7 +51,7 @@ public class EyeFiCard implements ICard {
     private InetAddress ipAddress;
 
     /**
-     * the session request that triggerd the craetion of the card.
+     * the session request that triggered the creation of the card.
      */
     private StartSessionRequest startSession;
 
@@ -115,7 +115,6 @@ public class EyeFiCard implements ICard {
         for (IFileListener fileListener : fileListeners) {
             fileListener.notifyNewFile(this, eyeFiPhoto);
         }
-
     }
 
     @Override
